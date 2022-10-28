@@ -25,119 +25,41 @@ public class Game {
 
     public void getAllPossibleMoves(Piece piece) {
         List<Vec2> out = new ArrayList<>();
-        int x = piece.position.x;
-        int y = piece.position.y;
+        Vec2 pos = piece.position;
         
         // checking horizontal movement
         if (piece.type.movesHorizontally) {
             // right
-            for (int ix = x + 1; ix < scenario.terrain.dimensionX; ix++) {
-                if (checkIfFree(ix, y)) {
-                    out.add(new Vec2(ix, y));
-                } else if (!piece.type.tags.contains("jumps") && checkIfInBounds(x, y)){
-                    // if piece can't jump, then it stops searching
-                    break;
-                }
-            }
+            out.addAll(drawLine(piece, new Vec2(1, 0)));
             // left
-            for (int ix = x - 1; ix > 0; ix--) {
-                if (checkIfFree(ix, y)) {
-                    out.add(new Vec2(ix, y));
-                } else if (!piece.type.tags.contains("jumps") && checkIfInBounds(x, y)){
-                    break;
-                }
-            }
+            out.addAll(drawLine(piece, new Vec2(-1, 0)));
         }
 
         // checking vertical movement
         if (piece.type.movesVertically) {
             // up (+y)
-            for (int iy = y + 1; iy < scenario.terrain.dimensionY; iy++) {
-                if (checkIfFree(x, iy)) {
-                    out.add(new Vec2(x, iy));
-                } else if (!piece.type.tags.contains("jumps") && checkIfInBounds(x, y)){
-                    break;
-                }
-            }
+            out.addAll(drawLine(piece, new Vec2(0, 1)));
             // down (-y)
-            for (int iy = y - 1; iy > 0; iy--) {
-                if (checkIfFree(x, iy)) {
-                    out.add(new Vec2(x, iy));
-                } else if (!piece.type.tags.contains("jumps") && checkIfInBounds(x, y)){
-                    break;
-                }
-            }
+            out.addAll(drawLine(piece, new Vec2(0, -1)));
         }
         
-        // checking diagonal movement (ugly | works | slow)
-        // TODO holy shit make this look better
+        // checking diagonal movement
         if (piece.type.movesDiagonally) {
             // up right + +
-            for (int ix = x + 1, iy = y + 1; ix < scenario.terrain.dimensionX && iy < scenario.terrain.dimensionY; ix++, iy++) {
-                if (!checkIfInBounds(x, y)) {
-                    break;
-                } else if (checkIfFree(ix, iy)) {
-                    // free space
-                    out.add(new Vec2(ix, iy));
-                } else if (piece.isWhite != getPiece(ix, iy).isWhite || piece.containsTag("jumps")) {
-                    // space with enemy piece
-                    out.add(new Vec2(ix, iy));
-                    break;
-                } else {
-                    break;
-                }
-            }
+            out.addAll(drawLine(piece, new Vec2(1, 1)));
             // up left - +
-            for (int ix = x - 1, iy = y + 1; ix >= 0 && iy < scenario.terrain.dimensionY; ix--, iy++) {
-                if (!checkIfInBounds(x, y)) {
-                    break;
-                } else if (checkIfFree(ix, iy)) {
-                    // free space
-                    out.add(new Vec2(ix, iy));
-                } else if (piece.isWhite != getPiece(ix, iy).isWhite || piece.containsTag("jumps")) {
-                    // space with enemy piece
-                    out.add(new Vec2(ix, iy));
-                    break;
-                } else {
-                    break;
-                }
-            }
+            out.addAll(drawLine(piece, new Vec2(-1, 1)));
             // down right + -
-            for (int ix = x + 1, iy = y - 1; ix < scenario.terrain.dimensionX && iy >= 0; ix++, iy--) {
-                if (!checkIfInBounds(x, y)) {
-                    break;
-                } else if (checkIfFree(ix, iy)) {
-                    // free space
-                    out.add(new Vec2(ix, iy));
-                } else if (piece.isWhite != getPiece(ix, iy).isWhite || piece.containsTag("jumps")) {
-                    // space with enemy piece
-                    out.add(new Vec2(ix, iy));
-                    break;
-                } else {
-                    break;
-                }
-            }
+            out.addAll(drawLine(piece, new Vec2(1, -1)));
             // down left - -
-            for (int ix = x - 1, iy = y - 1; ix >= 0 && iy >= 0; ix--, iy--) {
-                if (!checkIfInBounds(x, y)) {
-                    break;
-                } else if (checkIfFree(ix, iy)) {
-                    // free space
-                    out.add(new Vec2(ix, iy));
-                } else if (piece.isWhite != getPiece(ix, iy).isWhite || piece.containsTag("jumps")) {
-                    // space with enemy piece
-                    out.add(new Vec2(ix, iy));
-                    break;
-                } else {
-                    break;
-                }
-            }
+            out.addAll(drawLine(piece, new Vec2(-1, -1)));
         }
 
         // checking direct movement
+        // TODO implement this using Move
         for (Vec2 move : piece.type.directMoves) {
-            int dx = x + move.x;
-            int dy = piece.isWhite ? y + move.y : y - move.y;
+            int dx = pos.x + move.x;
+            int dy = piece.isWhite ? pos.y + move.y : pos.y - move.y;
             if (checkIfFree(dx, dy)) {
                 out.add(new Vec2(dx, dy));
             }
@@ -145,13 +67,26 @@ public class Game {
         Controller.possibleMoves = out;
     }
     
-    ArrayList<Vec2> drawLine() {
-        //TODO please IMPLEMENT THIS
-        // !!!!
-        // !!!!
-        // !!!!
-        // !!!!
-        return null;
+    ArrayList<Vec2> drawLine(Piece piece, Vec2 dir) {
+        Vec2 pos = piece.position;
+        ArrayList<Vec2> out = new ArrayList<>();
+        for (int ix = pos.x + dir.x, iy = pos.y + dir.y;
+             ix < scenario.terrain.dimensionX && iy < scenario.terrain.dimensionY;
+             ix += dir.x, iy += dir.y) {
+            if (!checkIfInBounds(ix, iy)) {
+                break;
+            } else if (checkIfFree(ix, iy)) {
+                // free space
+                out.add(new Vec2(ix, iy));
+            } else if (piece.isWhite != getPiece(ix, iy).isWhite || piece.containsTag("jumps")) {
+                // space with enemy piece
+                out.add(new Vec2(ix, iy));
+                break;
+            } else {
+                break;
+            }
+        }
+        return out;
     }
 
     boolean checkIfInBounds(int x, int y) {
