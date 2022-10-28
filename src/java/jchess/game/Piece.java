@@ -8,11 +8,11 @@ public class Piece {
 
     public String toPrintString() {
         String colour = isWhite ? "white" : "black";
-        return type.typeName + "{pos: " + position + ", " + colour + "}";
+        return type.getTypeName() + "{pos: " + position + ", " + colour + "}";
     }
     
     public boolean containsTag(String tag) {
-        return type.tags.contains(tag);
+        return type.getTags().contains(tag);
     }
     
     public Piece(Vec2 position, String typeName, boolean isWhite) {

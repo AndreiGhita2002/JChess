@@ -3,7 +3,6 @@ package jchess.game;
 import javafx.util.Pair;
 import jchess.util.Vec2;
 import jchess.ux.Controller;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class Game {
         Vec2 pos = piece.position;
         
         // checking horizontal movement
-        if (piece.type.movesHorizontally) {
+        if (piece.type.isMovesHorizontally()) {
             // right
             out.addAll(drawLine(piece, new Vec2(1, 0)));
             // left
@@ -36,7 +35,7 @@ public class Game {
         }
 
         // checking vertical movement
-        if (piece.type.movesVertically) {
+        if (piece.type.isMovesVertically()) {
             // up (+y)
             out.addAll(drawLine(piece, new Vec2(0, 1)));
             // down (-y)
@@ -44,7 +43,7 @@ public class Game {
         }
         
         // checking diagonal movement
-        if (piece.type.movesDiagonally) {
+        if (piece.type.isMovesDiagonally()) {
             // up right + +
             out.addAll(drawLine(piece, new Vec2(1, 1)));
             // up left - +
@@ -57,7 +56,7 @@ public class Game {
 
         // checking direct movement
         // TODO implement this using Move
-        for (Vec2 move : piece.type.directMoves) {
+        for (Vec2 move : piece.type.getDirectMoves()) {
             int dx = pos.x + move.x;
             int dy = piece.isWhite ? pos.y + move.y : pos.y - move.y;
             if (checkIfFree(dx, dy)) {
@@ -94,7 +93,6 @@ public class Game {
     }
 
     boolean checkIfFree(int x, int y) {
-        //TODO fix case when piece can be taken
         Vec2 v = new Vec2(x, y);
         if (!checkIfInBounds(x, y))
             return false;
@@ -189,8 +187,8 @@ public class Game {
         }
         System.out.println(".");
         System.out.println();
-        for (String t : PieceType.pieceTypes.keySet()) {
-            System.out.println(PieceType.pieceTypes.get(t).toPrintString());
+        for (String t : PieceType.getPieceTypes().keySet()) {
+            System.out.println(PieceType.getPieceTypes().get(t).toPrintString());
         }
     }
 }

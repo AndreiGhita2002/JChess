@@ -14,20 +14,21 @@ import java.util.Map;
 
 public class PieceType {
     // meta data
-    public static Map<String, PieceType> pieceTypes;
-    public String typeName;
+    private static Map<String, PieceType> pieceTypes;
+    private final String typeName;
     public Image graphicImageWhite;
     public Image graphicImageBlack;
 
     // game data
-    ArrayList<Vec2> directMoves;
-    boolean movesHorizontally;
-    boolean movesVertically;
-    boolean movesDiagonally;
-    boolean checkable;
-    ArrayList<String> tags;
+    private final ArrayList<Vec2> directMoves;
+    private final boolean movesHorizontally;
+    private final boolean movesVertically;
+    private final boolean movesDiagonally;
+    private final boolean checkable;
+    private final ArrayList<String> tags;
 
-    //TODO make all the fields private and add getters
+    private static boolean first = true;
+    public static boolean doGraphics = true;
 
     public String toPrintString() {
         String out = "PieceType:" + typeName + ": \n";
@@ -71,7 +72,7 @@ public class PieceType {
         return getPieceType(type);
     }
 
-    static PieceType getPieceType(String type) {
+    public static PieceType getPieceType(String type) {
         if (pieceTypes != null) {
             for (String k : pieceTypes.keySet()) {
                 if (type.equals(k)) {
@@ -99,6 +100,33 @@ public class PieceType {
     }
 
     PieceType(JSONObject jsonObject) {
+        // adding the "any" and "empty" pieceTypes if this is the first time this is called
+        if (first) {
+            first = false;
+            pieceTypes.put("any", new PieceType(new JSONObject("""
+                    {
+                      "typeName": "any",
+                      "graphicName": "any",
+                      "movesHorizontally": false,
+                      "movesVertically": false,
+                      "movesDiagonally": false,
+                      "checkable": false,
+                      "tags": ["any", "abstract"],
+                      "directMoves": []
+                    }""")));
+            pieceTypes.put("empty", new PieceType(new JSONObject("""
+                    {
+                      "typeName": "empty",
+                      "graphicName": "empty",
+                      "movesHorizontally": false,
+                      "movesVertically": false,
+                      "movesDiagonally": false,
+                      "checkable": false,
+                      "tags": ["empty", "abstract"],
+                      "directMoves": []
+                    }""")));
+        }
+
         // loading the boolean properties
         this.typeName = jsonObject.getString("typeName");
         movesHorizontally = jsonObject.getBoolean("movesHorizontally");
@@ -119,15 +147,57 @@ public class PieceType {
         }
 
         // loading the graphics
-        try {
-            graphicImageWhite = new Image("graphics/" + jsonObject.getString("graphicName") + "_white.png",
-                    Controller.squareSize, Controller.squareSize, false, false);
-            graphicImageBlack = new Image("graphics/" + jsonObject.getString("graphicName") + "_black.png",
-                    Controller.squareSize, Controller.squareSize, false, false);
-        } catch (IllegalArgumentException e) {
-            System.out.println("[!!!] Graphics not found at path:");
-            System.out.println("[!!!] graphics/" + jsonObject.getString("graphicName") + "_white.png");
+        if (doGraphics) {
+            try {
+                graphicImageWhite = new Image("graphics/" + jsonObject.getString("graphicName") + "_white.png",
+                        Controller.squareSize, Controller.squareSize, false, false);
+                graphicImageBlack = new Image("graphics/" + jsonObject.getString("graphicName") + "_black.png",
+                        Controller.squareSize, Controller.squareSize, false, false);
+            } catch (IllegalArgumentException e) {
+                System.out.println("[!!!] Graphics not found at path:");
+                System.out.println("[!!!] graphics/" + jsonObject.getString("graphicName") + "_white.png");
+            }
         }
         pieceTypes.put(this.typeName, this);
+    }
+
+    public static Map<String, PieceType> getPieceTypes() {
+        return pieceTypes;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public Image getGraphicImageWhite() {
+        return graphicImageWhite;
+    }
+
+    public Image getGraphicImageBlack() {
+        return graphicImageBlack;
+    }
+
+    public ArrayList<Vec2> getDirectMoves() {
+        return directMoves;
+    }
+
+    public boolean isMovesHorizontally() {
+        return movesHorizontally;
+    }
+
+    public boolean isMovesVertically() {
+        return movesVertically;
+    }
+
+    public boolean isMovesDiagonally() {
+        return movesDiagonally;
+    }
+
+    public boolean isCheckable() {
+        return checkable;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
     }
 }
