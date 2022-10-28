@@ -1,0 +1,10 @@
+{
+  "typeName": "rook",
+  "graphicName": "rook",
+  "movesHorizontally": true,
+  "movesVertically": true,
+  "movesDiagonally": false,
+  "checkable": false,
+  "tags": ["canBeTransformedInto", "castle", "basic"],
+  "directMoves": []
+}

@@ -1,0 +1,10 @@
+{
+  "typeName": "horse",
+  "graphicName": "horse",
+  "movesHorizontally": false,
+  "movesVertically": false,
+  "movesDiagonally": false,
+  "checkable": false,
+  "tags": ["canBeTransformedInto", "basic", "jumps"],
+  "directMoves": [{"x": 1, "y": 2}, {"x": 2, "y": 1}, {"x": 2, "y": -1}, {"x": -1, "y": 2}, {"x": -1, "y": -2}, {"x": -2, "y": -1}, {"x": -2, "y": 1}, {"x": -1, "y": 2}]
+}

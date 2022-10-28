@@ -1,0 +1,10 @@
+{
+  "typeName": "bishop",
+  "graphicName": "bishop",
+  "movesHorizontally": false,
+  "movesVertically": false,
+  "movesDiagonally": true,
+  "checkable": false,
+  "tags": ["canBeTransformedInto", "basic"],
+  "directMoves": []
+}

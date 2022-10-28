@@ -1,0 +1,10 @@
+{
+  "typeName": "dude",
+  "graphicName": "king",
+  "movesHorizontally": false,
+  "movesVertically": false,
+  "movesDiagonally": false,
+  "checkable": false,
+  "tags": ["canBeTransformedInto", "dude", "test"],
+  "directMoves": []
+}

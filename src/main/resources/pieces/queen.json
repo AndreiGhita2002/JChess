@@ -1,0 +1,10 @@
+{
+  "typeName": "queen",
+  "graphicName": "queen",
+  "movesHorizontally": true,
+  "movesVertically": true,
+  "movesDiagonally": true,
+  "checkable": false,
+  "tags": ["canBeTransformedInto", "basic"],
+  "directMoves": []
+}

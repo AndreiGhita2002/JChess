@@ -1,0 +1,10 @@
+{
+  "typeName": "pawn",
+  "graphicName": "pawn",
+  "movesHorizontally": false,
+  "movesVertically": false,
+  "movesDiagonally": false,
+  "checkable": false,
+  "tags": ["canTransform", "double", "basic"],
+  "directMoves": [{"x": 0, "y": 1}]
+}
