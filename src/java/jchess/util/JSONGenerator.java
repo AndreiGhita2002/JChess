@@ -8,7 +8,7 @@ public class JSONGenerator {
         Game game = new Game(new Scenario("classic"));
         Vec2 oneF = new Vec2(0, 1);
         Condition cond = new Condition(PieceType.getPieceType("any"), new Vec2(0, 0));
-        Move m = new Move(oneF, cond);
+        DirectMove m = new DirectMove(oneF, cond);
 
         System.out.println(cond.toPrintString());
         System.out.println();

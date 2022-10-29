@@ -3,7 +3,7 @@ package jchess.game;
 import jchess.util.Vec2;
 import org.json.JSONObject;
 
-public class Move {
+public class DirectMove {
     Vec2 displacement;
     Condition condition;
 
@@ -22,13 +22,13 @@ public class Move {
         return j.toString();
     }
 
-    Move(String json) {
+    DirectMove(String json) {
         JSONObject j = new JSONObject(json);
         this.displacement =  new Vec2(j.getString("displacement"));
         this.condition = new Condition(j.getString("condition"));
     }
 
-    public Move(Vec2 displacement, Condition condition) {
+    public DirectMove(Vec2 displacement, Condition condition) {
         this.displacement = displacement;
         this.condition = condition;
     }
