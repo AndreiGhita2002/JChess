@@ -47,7 +47,7 @@ public class Controller extends Application {
     public void start(Stage stage) {
         initGame();
 
-        // initialising the Controller
+        // initializing the Controller
         root = new Group();
         possibleMovesIcons = new Group();
         debugGroup = new Group();
@@ -259,7 +259,7 @@ public class Controller extends Application {
     }
     
     static private void initGame() {
-        // initialising the game
+        // initializing the game
         game = new Game(new Scenario("classic"));
 
         int squareSizeX = (W - 200) / game.scenario.terrain.dimensionX;

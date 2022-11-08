@@ -18,6 +18,7 @@ public class Scenario {
     public String blackStart;
     public ArrayList<Piece> whitePieces;
     public ArrayList<Piece> blackPieces;
+    public ArrayList<MultiMove> multiMoves; //TODO properly implement this
 
     public Scenario(String scenariosName) {
         name = scenariosName;
