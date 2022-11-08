@@ -1,6 +1,6 @@
 package jchess.game;
 
-import javafx.util.Pair;
+import jchess.util.Pair;
 import jchess.util.Vec2;
 import jchess.ux.Controller;
 
@@ -56,7 +56,7 @@ public class Game {
         }
 
         // checking direct movement
-        // TODO implement this using Move
+        // TODO implement this using DirectMove
         for (Vec2 move : piece.type.directMoves) {
             int dx = pos.x + move.x;
             int dy = piece.isWhite ? pos.y + move.y : pos.y - move.y;
