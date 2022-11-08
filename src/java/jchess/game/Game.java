@@ -3,6 +3,7 @@ package jchess.game;
 import javafx.util.Pair;
 import jchess.util.Vec2;
 import jchess.ux.Controller;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,47 +27,27 @@ public class Game {
         List<Vec2> out = new ArrayList<>();
         Vec2 pos = piece.position;
         
-        // checking horizontal movement
-        if (piece.type.isMovesHorizontally()) {
-            // right
-            out.addAll(drawLine(piece, new Vec2(1, 0)));
-            // left
-            out.addAll(drawLine(piece, new Vec2(-1, 0)));
-        }
-
-        // checking vertical movement
-        if (piece.type.isMovesVertically()) {
-            // up (+y)
-            out.addAll(drawLine(piece, new Vec2(0, 1)));
-            // down (-y)
-            out.addAll(drawLine(piece, new Vec2(0, -1)));
-        }
-        
-        // checking diagonal movement
-        if (piece.type.isMovesDiagonally()) {
-            // up right + +
-            out.addAll(drawLine(piece, new Vec2(1, 1)));
-            // up left - +
-            out.addAll(drawLine(piece, new Vec2(-1, 1)));
-            // down right + -
-            out.addAll(drawLine(piece, new Vec2(1, -1)));
-            // down left - -
-            out.addAll(drawLine(piece, new Vec2(-1, -1)));
+        // checking line movement
+        // TODO redo all of this with proper condition checking
+        for (LineMove lm : piece.type.lineMoves) {
+            // inverts y if it's black
+            Vec2 dir = new Vec2(lm.direction.x, piece.isWhite ? lm.direction.y : -lm.direction.y);
+            out.addAll(drawLine(piece, dir, lm.condition));
         }
 
         // checking direct movement
-        // TODO implement this using Move
-        for (Vec2 move : piece.type.getDirectMoves()) {
-            int dx = pos.x + move.x;
-            int dy = piece.isWhite ? pos.y + move.y : pos.y - move.y;
-            if (checkIfFree(dx, dy)) {
+        for (DirectMove dm : piece.type.directMoves) {
+            int dx = pos.x + dm.displacement.x;
+            int dy = piece.isWhite ? pos.y + dm.displacement.y : pos.y - dm.displacement.y;
+            if (checkCondition(piece, dm)) {
                 out.add(new Vec2(dx, dy));
             }
         }
         Controller.possibleMoves = out;
     }
     
-    ArrayList<Vec2> drawLine(Piece piece, Vec2 dir) {
+    ArrayList<Vec2> drawLine(Piece piece, Vec2 dir, Condition condition) {
+        // TODO implement using checkCondition()
         Vec2 pos = piece.position;
         ArrayList<Vec2> out = new ArrayList<>();
         for (int ix = pos.x + dir.x, iy = pos.y + dir.y;
@@ -90,6 +71,11 @@ public class Game {
 
     boolean checkIfInBounds(int x, int y) {
         return x <= scenario.terrain.dimensionX && y <= scenario.terrain.dimensionY && x >= 0 && y >= 0;
+    }
+
+    boolean checkCondition(Piece piece, Move move) {
+        // TODO implement
+        return true;
     }
 
     boolean checkIfFree(int x, int y) {

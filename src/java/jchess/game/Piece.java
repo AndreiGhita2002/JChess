@@ -12,7 +12,7 @@ public class Piece {
     }
     
     public boolean containsTag(String tag) {
-        return type.getTags().contains(tag);
+        return type.tags.contains(tag);
     }
     
     public Piece(Vec2 position, String typeName, boolean isWhite) {

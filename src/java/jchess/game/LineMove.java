@@ -3,12 +3,12 @@ package jchess.game;
 import jchess.util.Vec2;
 import org.json.JSONObject;
 
-public class DirectMove extends Move {
-    Vec2 displacement;
+public class LineMove extends Move {
+    Vec2 direction;
 
     public String toPrintString() {
-        String s = "DirectMove: {\n";
-        s += "  displacement: " + displacement.toString() + "\n";
+        String s = "LineMove: {\n";
+        s += "  direction: " + direction.toString() + "\n";
         s += "  " + condition.toPrintString().indent(2);
         s += "}";
         return s;
@@ -16,20 +16,20 @@ public class DirectMove extends Move {
 
     public String toString() {
         JSONObject j = new JSONObject();
-        j.append("displacement", displacement.toString());
+        j.append("direction", direction.toString());
         j.append("condition", condition.toString());
         return j.toString();
     }
 
-    DirectMove(String json) {
+    LineMove(String json) {
         super(json);
         JSONObject j = new JSONObject(json);
-        this.displacement =  new Vec2(j.getString("displacement"));
+        this.direction =  new Vec2(j.getString("direction"));
         this.condition = new Condition(j.getString("condition"));
     }
 
-    public DirectMove(Vec2 displacement, Condition condition) {
+    public LineMove(Vec2 direction, Condition condition) {
         super(condition);
-        this.displacement = displacement;
+        this.direction = direction;
     }
 }
