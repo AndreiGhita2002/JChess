@@ -1,6 +1,6 @@
 package jchess.game;
 
-import javafx.util.Pair;
+import jchess.util.Pair;
 import jchess.util.Vec2;
 import jchess.ux.Controller;
 
