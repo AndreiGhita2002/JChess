@@ -12,7 +12,7 @@ public class Condition {
     PieceType otherPiece;
     Vec2 place;
     Condition next;
-    ArrayList<String> tags;
+    ArrayList<String> tags; // TODO you sure do love tags (see if necessary)
 
     public String toPrintString() {
         String s = "Condition: {\n";
