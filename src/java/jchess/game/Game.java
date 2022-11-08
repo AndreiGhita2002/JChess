@@ -27,47 +27,27 @@ public class Game {
         List<Vec2> out = new ArrayList<>();
         Vec2 pos = piece.position;
         
-        // checking horizontal movement
-        if (piece.type.movesHorizontally) {
-            // right
-            out.addAll(drawLine(piece, new Vec2(1, 0)));
-            // left
-            out.addAll(drawLine(piece, new Vec2(-1, 0)));
-        }
-
-        // checking vertical movement
-        if (piece.type.movesVertically) {
-            // up (+y)
-            out.addAll(drawLine(piece, new Vec2(0, 1)));
-            // down (-y)
-            out.addAll(drawLine(piece, new Vec2(0, -1)));
-        }
-        
-        // checking diagonal movement
-        if (piece.type.movesDiagonally) {
-            // up right + +
-            out.addAll(drawLine(piece, new Vec2(1, 1)));
-            // up left - +
-            out.addAll(drawLine(piece, new Vec2(-1, 1)));
-            // down right + -
-            out.addAll(drawLine(piece, new Vec2(1, -1)));
-            // down left - -
-            out.addAll(drawLine(piece, new Vec2(-1, -1)));
+        // checking line movement
+        // TODO redo all of this with proper condition checking
+        for (LineMove lm : piece.type.lineMoves) {
+            // inverts y if it's black
+            Vec2 dir = new Vec2(lm.direction.x, piece.isWhite ? lm.direction.y : -lm.direction.y);
+            out.addAll(drawLine(piece, dir, lm.condition));
         }
 
         // checking direct movement
-        // TODO implement this using DirectMove
-        for (Vec2 move : piece.type.directMoves) {
-            int dx = pos.x + move.x;
-            int dy = piece.isWhite ? pos.y + move.y : pos.y - move.y;
-            if (checkIfFree(dx, dy)) {
+        for (DirectMove dm : piece.type.directMoves) {
+            int dx = pos.x + dm.displacement.x;
+            int dy = piece.isWhite ? pos.y + dm.displacement.y : pos.y - dm.displacement.y;
+            if (checkCondition(piece, dm)) {
                 out.add(new Vec2(dx, dy));
             }
         }
         Controller.possibleMoves = out;
     }
     
-    ArrayList<Vec2> drawLine(Piece piece, Vec2 dir) {
+    ArrayList<Vec2> drawLine(Piece piece, Vec2 dir, Condition condition) {
+        // TODO implement using checkCondition()
         Vec2 pos = piece.position;
         ArrayList<Vec2> out = new ArrayList<>();
         for (int ix = pos.x + dir.x, iy = pos.y + dir.y;
@@ -93,8 +73,12 @@ public class Game {
         return x <= scenario.terrain.dimensionX && y <= scenario.terrain.dimensionY && x >= 0 && y >= 0;
     }
 
+    boolean checkCondition(Piece piece, Move move) {
+        // TODO implement
+        return true;
+    }
+
     boolean checkIfFree(int x, int y) {
-        //TODO fix case when piece can be taken
         Vec2 v = new Vec2(x, y);
         if (!checkIfInBounds(x, y))
             return false;
@@ -189,8 +173,8 @@ public class Game {
         }
         System.out.println(".");
         System.out.println();
-        for (String t : PieceType.pieceTypes.keySet()) {
-            System.out.println(PieceType.pieceTypes.get(t).toPrintString());
+        for (String t : PieceType.getPieceTypes().keySet()) {
+            System.out.println(PieceType.getPieceTypes().get(t).toPrintString());
         }
     }
 }
