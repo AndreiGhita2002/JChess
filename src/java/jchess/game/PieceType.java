@@ -140,31 +140,30 @@ public class PieceType {
         pieceTypes.put(this.typeName, this);
     }
 
+    private PieceType(String name) {
+        typeName = name;
+        graphicImageBlack = null;
+        graphicImageWhite = null;
+        directMoves = null;
+        lineMoves = null;
+        checkable = false;
+        tags = new ArrayList<>();
+        switch (name) {
+            case "any" -> tags.add("any");
+            case "empty" -> tags.add("empty");
+            case "opposite" -> tags.add("opposite_colour");
+            case "same" -> tags.add("same_colour");
+        }
+        tags.add("abstract");
+    }
+    
     private static void firstTimeInit() {
-        // adding the "any" and "empty" pieceTypes if this is the first time this is called
+        // adding the abstract pieceTypes if this is the first time this is called
         first = false;
-        pieceTypes.put("any", new PieceType(new JSONObject("""
-                    {
-                      "typeName": "any",
-                      "graphicName": "any",
-                      "movesHorizontally": false,
-                      "movesVertically": false,
-                      "movesDiagonally": false,
-                      "checkable": false,
-                      "tags": ["any", "abstract"],
-                      "directMoves": []
-                    }""")));
-        pieceTypes.put("empty", new PieceType(new JSONObject("""
-                    {
-                      "typeName": "empty",
-                      "graphicName": "empty",
-                      "movesHorizontally": false,
-                      "movesVertically": false,
-                      "movesDiagonally": false,
-                      "checkable": false,
-                      "tags": ["empty", "abstract"],
-                      "directMoves": []
-                    }""")));
+        pieceTypes.put("any", new PieceType("any"));
+        pieceTypes.put("empty", new PieceType("empty"));
+        pieceTypes.put("opposite", new PieceType("opposite"));
+        pieceTypes.put("sane", new PieceType("same"));
     }
 
     public static Map<String, PieceType> getPieceTypes() {

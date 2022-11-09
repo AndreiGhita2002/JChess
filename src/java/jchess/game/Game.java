@@ -82,18 +82,15 @@ public class Game {
             String otherType = con.otherPiece.getTypeName();
             Piece pieceAtPos = getPiece(pos);
 
-            // TODO DO THIS FIRST PLS:
-            //  check the colour of the other pieces either by:
-            // (1) add a colour field to Condition (can be WHITE, BLACK or ANY)
-            // (2) add new consistent pieceTypes ("otherColour", "sameColour") <-- this sounds like the best
-            //          remember to change the constructor in PieceType so that it's better for this sort of thing
-            // (3) only make it check for pieces of other colour (makes it less powerful, cringe)
-
             // TODO what a mess, clean it up a bit!
             // testing if this condition is valid
             if (Objects.equals(otherType, "any")) {
                 valid = true;
-            } else if (Objects.equals(otherType, "piece") && pieceAtPos != null) {
+            } else if (Objects.equals(otherType, "opposite") && pieceAtPos != null
+                    && pieceAtPos.isWhite != piece.isWhite) {
+                valid = true;
+            } else if (Objects.equals(otherType, "same") && pieceAtPos != null
+                    && pieceAtPos.isWhite == piece.isWhite) {
                 valid = true;
             } else if (Objects.equals(otherType, "empty") && pieceAtPos == null) {
                 valid = true;
