@@ -93,32 +93,7 @@ public class PieceType {
     }
 
     PieceType(JSONObject jsonObject) {
-        // adding the "any" and "empty" pieceTypes if this is the first time this is called
-        if (first) {
-            first = false;
-            pieceTypes.put("any", new PieceType(new JSONObject("""
-                    {
-                      "typeName": "any",
-                      "graphicName": "any",
-                      "movesHorizontally": false,
-                      "movesVertically": false,
-                      "movesDiagonally": false,
-                      "checkable": false,
-                      "tags": ["any", "abstract"],
-                      "directMoves": []
-                    }""")));
-            pieceTypes.put("empty", new PieceType(new JSONObject("""
-                    {
-                      "typeName": "empty",
-                      "graphicName": "empty",
-                      "movesHorizontally": false,
-                      "movesVertically": false,
-                      "movesDiagonally": false,
-                      "checkable": false,
-                      "tags": ["empty", "abstract"],
-                      "directMoves": []
-                    }""")));
-        }
+        if (first) firstTimeInit();
 
         // loading the boolean properties
         this.typeName = jsonObject.getString("typeName");
@@ -163,6 +138,33 @@ public class PieceType {
             }
         }
         pieceTypes.put(this.typeName, this);
+    }
+
+    private static void firstTimeInit() {
+        // adding the "any" and "empty" pieceTypes if this is the first time this is called
+        first = false;
+        pieceTypes.put("any", new PieceType(new JSONObject("""
+                    {
+                      "typeName": "any",
+                      "graphicName": "any",
+                      "movesHorizontally": false,
+                      "movesVertically": false,
+                      "movesDiagonally": false,
+                      "checkable": false,
+                      "tags": ["any", "abstract"],
+                      "directMoves": []
+                    }""")));
+        pieceTypes.put("empty", new PieceType(new JSONObject("""
+                    {
+                      "typeName": "empty",
+                      "graphicName": "empty",
+                      "movesHorizontally": false,
+                      "movesVertically": false,
+                      "movesDiagonally": false,
+                      "checkable": false,
+                      "tags": ["empty", "abstract"],
+                      "directMoves": []
+                    }""")));
     }
 
     public static Map<String, PieceType> getPieceTypes() {

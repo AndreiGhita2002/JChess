@@ -6,6 +6,7 @@ import jchess.ux.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Game {
     public ArrayList<Piece> whitePieces;
@@ -53,7 +54,7 @@ public class Game {
         for (int ix = pos.x + dir.x, iy = pos.y + dir.y;
              ix < scenario.terrain.dimensionX && iy < scenario.terrain.dimensionY;
              ix += dir.x, iy += dir.y) {
-            if (!checkIfInBounds(ix, iy)) {
+            if (outOfBounds(ix, iy)) {
                 break;
             } else if (checkIfFree(ix, iy)) {
                 // free space
@@ -69,18 +70,49 @@ public class Game {
         return out;
     }
 
-    boolean checkIfInBounds(int x, int y) {
-        return x <= scenario.terrain.dimensionX && y <= scenario.terrain.dimensionY && x >= 0 && y >= 0;
+    boolean outOfBounds(int x, int y) {
+        return x > scenario.terrain.dimensionX || y > scenario.terrain.dimensionY || x < 0 || y < 0;
     }
 
     boolean checkCondition(Piece piece, Move move) {
-        // TODO implement
+        Condition con = move.condition;
+        Vec2 pos = piece.position.add(move.condition.place);
+        boolean valid;
+        while (true) {
+            String otherType = con.otherPiece.getTypeName();
+            Piece pieceAtPos = getPiece(pos);
+
+            // TODO DO THIS FIRST PLS:
+            //  check the colour of the other pieces either by:
+            // (1) add a colour field to Condition (can be WHITE, BLACK or ANY)
+            // (2) add new consistent pieceTypes ("otherColour", "sameColour") <-- this sounds like the best
+            //          remember to change the constructor in PieceType so that it's better for this sort of thing
+            // (3) only make it check for pieces of other colour (makes it less powerful, cringe)
+
+            // TODO what a mess, clean it up a bit!
+            // testing if this condition is valid
+            if (Objects.equals(otherType, "any")) {
+                valid = true;
+            } else if (Objects.equals(otherType, "piece") && pieceAtPos != null) {
+                valid = true;
+            } else if (Objects.equals(otherType, "empty") && pieceAtPos == null) {
+                valid = true;
+            } else if (pieceAtPos == null) {
+                return false;
+            } else valid = Objects.equals(otherType, pieceAtPos.type.getTypeName());
+            if (!valid) return false;
+
+            // advancing to the next condition in the chain
+            if (con.next == null) break;
+            con = con.next;
+            pos = piece.position.add(move.condition.place);
+        }
         return true;
     }
 
     boolean checkIfFree(int x, int y) {
         Vec2 v = new Vec2(x, y);
-        if (!checkIfInBounds(x, y))
+        if (outOfBounds(x, y))
             return false;
         if (x >= scenario.terrain.dimensionX || x < 0 || y >= scenario.terrain.dimensionY || y < 0)
             return false;

@@ -1,6 +1,7 @@
 package jchess.game;
 
 import jchess.util.Vec2;
+
 public class Piece {
     public Vec2 position;
     public PieceType type;
@@ -14,7 +15,7 @@ public class Piece {
     public boolean containsTag(String tag) {
         return type.tags.contains(tag);
     }
-    
+
     public Piece(Vec2 position, String typeName, boolean isWhite) {
         this.position = position;
         this.isWhite = isWhite;

@@ -9,8 +9,12 @@ public class Vec2 {
     public int x;
     public int y;
 
-    public Vec2 add(Vec2 v1, Vec2 v2) {
+    public static Vec2 add(Vec2 v1, Vec2 v2) {
         return new Vec2(v1.x + v2.x, v1.y +v2.y);
+    }
+
+    public Vec2 add(Vec2 v2) {
+        return new Vec2(this.x + v2.x, this.y + v2.y);
     }
 
     @Override
