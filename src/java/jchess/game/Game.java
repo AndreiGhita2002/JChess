@@ -79,7 +79,7 @@ public class Game {
         Vec2 pos = piece.position.add(move.condition.place);
         boolean valid;
         while (true) {
-            String otherType = con.otherPiece.getTypeName();
+            String otherType = con.otherPiece;
             Piece pieceAtPos = getPiece(pos);
 
             // TODO what a mess, clean it up a bit!

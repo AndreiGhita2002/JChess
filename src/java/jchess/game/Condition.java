@@ -9,14 +9,14 @@ import java.util.ArrayList;
 public class Condition {
     // returns true if other piece is in place (relative to the current piece)
     // checked in Game
-    PieceType otherPiece;
+    String otherPiece;
     Vec2 place;
     Condition next;
     ArrayList<String> tags; // TODO you sure do love tags (see if necessary)
 
     public String toPrintString() {
         String s = "Condition: {\n";
-        s += "  otherPiece: " + otherPiece.getTypeName() + "\n";
+        s += "  otherPiece: " + otherPiece + "\n";
         s += "  place: " + place.toString() + "\n";
         if (next == null) {
             s += "  next:  null\n";
@@ -28,25 +28,29 @@ public class Condition {
     }
 
     public String toString() {
+        return toJSON().toString();
+    }
+    
+    public JSONObject toJSON() {
         JSONObject j = new JSONObject();
-        j.append("otherPiece", otherPiece.getTypeName());
-        j.append("place", place.toString());
+        j.put("otherPiece", otherPiece);
+        j.put("place", place.toJSON());
         if (next != null) {
-            j.append("nextCondition", next.toString());
+            j.put("nextCondition", next.toJSON());
         } else {
-            j.append("nextCondition", "null");
+            j.put("nextCondition", "null");
         }
-        j.append("tags", tags);
-        return j.toString();
+        j.put("tags", tags);
+        return j;
     }
 
-    public Condition(PieceType otherPiece, Vec2 place) {
+    public Condition(String otherPiece, Vec2 place) {
         this.otherPiece = otherPiece;
         this.place = place;
         next = null;
     }
 
-    Condition(PieceType otherPiece, Vec2 place, Condition nextCondition) {
+    Condition(String otherPiece, Vec2 place, Condition nextCondition) {
         this.otherPiece = otherPiece;
         this.place = place;
         next = nextCondition;
@@ -54,7 +58,7 @@ public class Condition {
 
     Condition(String json) {
         JSONObject j = new JSONObject(json);
-        this.otherPiece = PieceType.getType(j.getString("otherPiece"));
+        this.otherPiece = j.getString("otherPiece");
         this.place = new Vec2(j.getString("place"));
         // tags
         JSONArray tagsJSON = j.getJSONArray("tags");

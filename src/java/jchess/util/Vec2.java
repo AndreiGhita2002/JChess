@@ -19,10 +19,7 @@ public class Vec2 {
 
     @Override
     public String toString() {
-        JSONObject j = new JSONObject();
-        j.append("x", x);
-        j.append("y", y);
-        return j.toString();
+        return toJSON().toString();
     }
 
     @Override
@@ -57,5 +54,12 @@ public class Vec2 {
     public Vec2(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+    
+    public JSONObject toJSON() {
+        JSONObject j = new JSONObject();
+        j.put("x", x);
+        j.put("y", y);
+        return j;
     }
 }

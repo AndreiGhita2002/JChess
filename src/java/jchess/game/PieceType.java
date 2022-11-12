@@ -38,11 +38,11 @@ public class PieceType {
 
     public String toString() {
         JSONObject j = new JSONObject();
-        j.append("typeName", typeName);
-        j.append("checkable", checkable);
-        j.append("tags", new JSONArray(tags));
-        j.append("directMoves", new JSONArray(directMoves));
-        j.append("lineMoves", new JSONArray(lineMoves));
+        j.put("typeName", typeName);
+        j.put("checkable", checkable);
+        j.put("tags", new JSONArray(tags));
+        j.put("directMoves", new JSONArray(directMoves));
+        j.put("lineMoves", new JSONArray(lineMoves));
         return j.toString();
     }
 
@@ -164,6 +164,12 @@ public class PieceType {
         pieceTypes.put("empty", new PieceType("empty"));
         pieceTypes.put("opposite", new PieceType("opposite"));
         pieceTypes.put("sane", new PieceType("same"));
+    }
+    
+    public static void tryFirstTimeInit() {
+        if (pieceTypes == null) pieceTypes = new HashMap<>();
+        if (first) firstTimeInit();
+        else System.out.println("couldn't do first time init");
     }
 
     public static Map<String, PieceType> getPieceTypes() {

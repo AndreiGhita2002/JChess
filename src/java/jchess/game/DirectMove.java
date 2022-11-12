@@ -16,8 +16,8 @@ public class DirectMove extends Move {
 
     public String toString() {
         JSONObject j = new JSONObject();
-        j.append("displacement", displacement.toString());
-        j.append("condition", condition.toString());
+        j.put("displacement", displacement.toJSON());
+        j.put("condition", condition.toJSON());
         return j.toString();
     }
 

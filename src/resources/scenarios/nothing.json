@@ -1,0 +1,11 @@
+{
+  "name": "nothing",
+  "displayName": "empty void",
+  "description": "this might crash",
+  "terrainType": "empty_rectangle",
+  "terrain": [7, 7],
+  "whiteStart": "low y",
+  "blackStart": "high y",
+  "whitePieces": {},
+  "blackPieces": {}
+}
