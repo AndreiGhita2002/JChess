@@ -1,10 +1,145 @@
 {
   "typeName": "horse",
   "graphicName": "horse",
-  "movesHorizontally": false,
-  "movesVertically": false,
-  "movesDiagonally": false,
   "checkable": false,
-  "tags": ["canBeTransformedInto", "basic", "jumps"],
-  "directMoves": [{"x": 1, "y": 2}, {"x": 2, "y": 1}, {"x": 2, "y": -1}, {"x": -1, "y": 2}, {"x": -1, "y": -2}, {"x": -2, "y": -1}, {"x": -2, "y": 1}, {"x": -1, "y": 2}]
+  "directMoves": [
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "displacement": {
+        "x": -1,
+        "y": 2
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "displacement": {
+        "x": 2,
+        "y": -1
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "displacement": {
+        "x": 1,
+        "y": 2
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "displacement": {
+        "x": 2,
+        "y": 1
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "displacement": {
+        "x": -1,
+        "y": 2
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "displacement": {
+        "x": 2,
+        "y": -1
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "displacement": {
+        "x": 1,
+        "y": -2
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "displacement": {
+        "x": -2,
+        "y": 1
+      }
+    }
+  ],
+  "lineMoves": [],
+  "tags": ["canBeTransformedInto", "basic", "jumps"]
 }

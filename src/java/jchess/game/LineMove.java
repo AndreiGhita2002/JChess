@@ -15,12 +15,16 @@ public class LineMove extends Move {
     }
 
     public String toString() {
-        JSONObject j = new JSONObject();
-        j.append("direction", direction.toString());
-        j.append("condition", condition.toString());
-        return j.toString();
+        return toJSON().toString();
     }
 
+    public JSONObject toJSON() {
+        JSONObject j = new JSONObject();
+        j.put("direction", direction.toJSON());
+        j.put("condition", condition.toJSON());
+        return j;
+    }
+    
     LineMove(String json) {
         super(json);
         JSONObject j = new JSONObject(json);

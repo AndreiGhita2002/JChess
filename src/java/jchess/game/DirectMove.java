@@ -15,10 +15,14 @@ public class DirectMove extends Move {
     }
 
     public String toString() {
+        return toJSON().toString();
+    }
+    
+    public JSONObject toJSON() {
         JSONObject j = new JSONObject();
         j.put("displacement", displacement.toJSON());
         j.put("condition", condition.toJSON());
-        return j.toString();
+        return j;
     }
 
     DirectMove(String json) {

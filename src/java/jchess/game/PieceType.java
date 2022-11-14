@@ -37,13 +37,26 @@ public class PieceType {
     }
 
     public String toString() {
+        return toJSON().toString();
+    }
+    
+    public JSONObject toJSON() {
         JSONObject j = new JSONObject();
         j.put("typeName", typeName);
         j.put("checkable", checkable);
-        j.put("tags", new JSONArray(tags));
-        j.put("directMoves", new JSONArray(directMoves));
-        j.put("lineMoves", new JSONArray(lineMoves));
-        return j.toString();
+        //tags
+        JSONArray tagsJSON = new JSONArray();
+        tags.forEach(tagsJSON::put);
+        j.put("tags", tagsJSON);
+        // direct moves
+        JSONArray directJSON = new JSONArray();
+        directMoves.forEach(e -> {directJSON.put(e.toJSON());});
+        j.put("directMoves", directJSON);
+        // line moves
+        JSONArray lineJSON = new JSONArray();
+        lineMoves.forEach(e -> {lineJSON.put(e.toJSON());});
+        j.put("lineMoves", lineJSON);
+        return j;
     }
 
     static boolean existsFromName(String name) {
@@ -95,6 +108,10 @@ public class PieceType {
     PieceType(JSONObject jsonObject) {
         if (first) firstTimeInit();
 
+        // TODO optimise this for cases where most moves have the same condition
+        //   so most cases
+        //   (all the conditions that are the same should be referenced to the same object)
+        
         // loading the boolean properties
         this.typeName = jsonObject.getString("typeName");
         checkable = jsonObject.getBoolean("checkable");
@@ -140,6 +157,17 @@ public class PieceType {
         pieceTypes.put(this.typeName, this);
     }
 
+    public PieceType(String typeName, ArrayList<String> tags, ArrayList<DirectMove> directMoves, ArrayList<LineMove> lineMoves) {
+        // TODO think about this
+        //   shouldn't really be used i think
+        //   good for testing tho
+        this.typeName = typeName;
+        this.tags = tags;
+        this.directMoves = directMoves;
+        this.lineMoves = lineMoves;
+        checkable = false;
+    }
+    
     private PieceType(String name) {
         typeName = name;
         graphicImageBlack = null;
@@ -150,6 +178,7 @@ public class PieceType {
         tags = new ArrayList<>();
         switch (name) {
             case "any" -> tags.add("any");
+            case "any_opposite" -> tags.add("any_opposite");
             case "empty" -> tags.add("empty");
             case "opposite" -> tags.add("opposite_colour");
             case "same" -> tags.add("same_colour");
@@ -161,9 +190,10 @@ public class PieceType {
         // adding the abstract pieceTypes if this is the first time this is called
         first = false;
         pieceTypes.put("any", new PieceType("any"));
+        pieceTypes.put("any_opposite", new PieceType("any_opposite"));
         pieceTypes.put("empty", new PieceType("empty"));
         pieceTypes.put("opposite", new PieceType("opposite"));
-        pieceTypes.put("sane", new PieceType("same"));
+        pieceTypes.put("same", new PieceType("same"));
     }
     
     public static void tryFirstTimeInit() {

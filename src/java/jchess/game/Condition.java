@@ -12,7 +12,7 @@ public class Condition {
     String otherPiece;
     Vec2 place;
     Condition next;
-    ArrayList<String> tags; // TODO you sure do love tags (see if necessary)
+    public ArrayList<String> tags; // TODO you sure do love tags (see if necessary)
 
     public String toPrintString() {
         String s = "Condition: {\n";
@@ -43,10 +43,11 @@ public class Condition {
         j.put("tags", tags);
         return j;
     }
-
+    
     public Condition(String otherPiece, Vec2 place) {
         this.otherPiece = otherPiece;
         this.place = place;
+        tags = new ArrayList<>();
         next = null;
     }
 
@@ -54,6 +55,7 @@ public class Condition {
         this.otherPiece = otherPiece;
         this.place = place;
         next = nextCondition;
+        tags = new ArrayList<>();
     }
 
     Condition(String json) {

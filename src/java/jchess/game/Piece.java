@@ -6,6 +6,7 @@ public class Piece {
     public Vec2 position;
     public PieceType type;
     public boolean isWhite;
+    public boolean moved = false;
 
     public String toPrintString() {
         String colour = isWhite ? "white" : "black";

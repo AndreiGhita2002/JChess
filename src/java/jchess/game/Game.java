@@ -86,6 +86,8 @@ public class Game {
             // testing if this condition is valid
             if (Objects.equals(otherType, "any")) {
                 valid = true;
+            } else if (Objects.equals(otherType, "any_opposite") && pieceAtPos.isWhite != piece.isWhite) {
+                valid = true;
             } else if (Objects.equals(otherType, "opposite") && pieceAtPos != null
                     && pieceAtPos.isWhite != piece.isWhite) {
                 valid = true;
@@ -97,6 +99,11 @@ public class Game {
             } else if (pieceAtPos == null) {
                 return false;
             } else valid = Objects.equals(otherType, pieceAtPos.type.getTypeName());
+            
+            if (con.tags.contains("not_moved") && piece.moved) {
+                valid = false;
+            }
+            
             if (!valid) return false;
 
             // advancing to the next condition in the chain
@@ -183,6 +190,7 @@ public class Game {
         }
         history.add(new Pair<>(piece, target));
         piece.position = target;
+        piece.moved = true;
         turn++;
     }
 
