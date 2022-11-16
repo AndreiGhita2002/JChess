@@ -58,10 +58,9 @@ public class Condition {
         tags = new ArrayList<>();
     }
 
-    Condition(String json) {
-        JSONObject j = new JSONObject(json);
+    Condition(JSONObject j) {
         this.otherPiece = j.getString("otherPiece");
-        this.place = new Vec2(j.getString("place"));
+        this.place = new Vec2(j.getJSONObject("place"));
         // tags
         JSONArray tagsJSON = j.getJSONArray("tags");
         tags = new ArrayList<>();
@@ -69,11 +68,11 @@ public class Condition {
             tags.add(o.toString());
         }
         // next
-        String s = j.getString("nextCondition");
-        if (s.equals("null")) {
+        Object s = j.get("nextCondition");
+        if (s.toString().equals("null")) {
             next = null;
         } else {
-            next = new Condition(s);
+            next = new Condition((JSONObject) s);
         }
     }
 }

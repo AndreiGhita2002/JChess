@@ -28,8 +28,8 @@ public class LineMove extends Move {
     LineMove(String json) {
         super(json);
         JSONObject j = new JSONObject(json);
-        this.direction =  new Vec2(j.getString("direction"));
-        this.condition = new Condition(j.getString("condition"));
+        this.direction =  new Vec2(j.getJSONObject("direction"));
+        this.condition = new Condition(j.getJSONObject("condition"));
     }
 
     public LineMove(Vec2 direction, Condition condition) {

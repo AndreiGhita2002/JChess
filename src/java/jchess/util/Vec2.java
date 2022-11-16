@@ -45,10 +45,9 @@ public class Vec2 {
         return out;
     }
 
-    public Vec2(String json) {
-        JSONObject j = new JSONObject(json);
-        this.x = (int) j.get("x");
-        this.y = (int) j.get("y");
+    public Vec2(JSONObject json) {
+        this.x = (int) json.get("x");
+        this.y = (int) json.get("y");
     }
 
     public Vec2(int x, int y) {
