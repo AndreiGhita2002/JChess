@@ -15,7 +15,7 @@ public class Terrain {
         this.dimensionY = dimY;
         this.type = "empty_rectangle";
 
-        //initialising the collision matrix with 0
+        //initializing the collision matrix with 0
         collisionMatrix = new ArrayList<>();
         for (int i = 0; i < dimensionX; i++) {
             collisionMatrix.add(new ArrayList<>());

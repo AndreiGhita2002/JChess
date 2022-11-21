@@ -172,8 +172,8 @@ public class PieceType {
         typeName = name;
         graphicImageBlack = null;
         graphicImageWhite = null;
-        directMoves = null;
-        lineMoves = null;
+        directMoves = new ArrayList<>();
+        lineMoves = new ArrayList<>();
         checkable = false;
         tags = new ArrayList<>();
         switch (name) {

@@ -260,7 +260,7 @@ public class Controller extends Application {
     
     static private void initGame() {
         // initializing the game
-        game = new Game(new Scenario("classic"));
+        game = new Game(new Scenario("pawnless"));
 
         int squareSizeX = (W - 200) / game.scenario.terrain.dimensionX;
         int squareSizeY = (H - 200) / game.scenario.terrain.dimensionY;
