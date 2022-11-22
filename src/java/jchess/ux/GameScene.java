@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -39,9 +40,10 @@ public class GameScene extends Scene {
     public static ArrayList<GraphicPiece> graphicPieces;
     public static List<Vec2> possibleMoves;
 
-    public GameScene(Parent parent) {
+    public GameScene(Parent parent, String scenarioName) {
         super(parent, Controller.W, Controller.H);
-        initGame();
+        Controller.setTitle("quirky chess - game board");
+        initGame(scenarioName);
 
         // initializing the ui
         root = (Group) parent;
@@ -53,16 +55,21 @@ public class GameScene extends Scene {
         root.getChildren().add(debugGroup);
         renderBackground(boardCanvas.getGraphicsContext2D(), game);
 
-        for (GraphicPiece gp : graphicPieces) {
-            root.getChildren().add(gp);
-            gp.refresh();
-        }
+        // creating the graphicPieces array
+        graphicPieces.forEach((gp) -> {root.getChildren().add(gp); gp.refresh();});
+
+        // adding a button for exiting the current game
+        Button quitButton = new Button("Return to Main Menu");
+        quitButton.setOnAction((e) -> Controller.changeScene(GUIStates.MAIN_MENU));
+        root.getChildren().add(quitButton);
+        quitButton.setLayoutX(Controller.W - 150);
+        quitButton.setLayoutY(Controller.H - 27);
 
         // Listener for keyboard inputs
         this.setOnKeyReleased(keyEvent -> {
             switch (keyEvent.getCode()) {
                 case R -> //!!!!!// TEST THIS //!!!!!//
-                        initGame();
+                        initGame(scenarioName);
                 case T -> debugGroup.setVisible(!debugGroup.isVisible());
                 case B -> System.out.println("bruh");
                 case D -> {
@@ -207,9 +214,9 @@ public class GameScene extends Scene {
         debugGroup.getChildren().addAll(circles);
     }
 
-    static void initGame() {
+    static void initGame(String scenarioName) {
         // initializing the game
-        game = new Game(new Scenario("classic"));
+        game = new Game(new Scenario(scenarioName));
 
         int squareSizeX = (Controller.W - 200) / game.scenario.terrain.dimensionX;
         int squareSizeY = (Controller.H - 200) / game.scenario.terrain.dimensionY;
