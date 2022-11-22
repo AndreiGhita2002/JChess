@@ -1,10 +1,77 @@
 {
   "typeName": "bishop",
   "graphicName": "bishop",
-  "movesHorizontally": false,
-  "movesVertically": false,
-  "movesDiagonally": true,
   "checkable": false,
-  "tags": ["canBeTransformedInto", "basic"],
-  "directMoves": []
+  "directMoves": [],
+  "lineMoves": [
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "direction": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "direction": {
+        "x": 1,
+        "y": -1
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "direction": {
+        "x": -1,
+        "y": 1
+      }
+    },
+    {
+      "condition": {
+        "nextCondition": "null",
+        "otherPiece": "any_opposite",
+        "place": {
+          "x": 0,
+          "y": 0
+        },
+        "tags": [
+
+        ]
+      },
+      "direction": {
+        "x": -1,
+        "y": -1
+      }
+    }
+  ],
+  "tags": ["canBeTransformedInto", "basic"]
 }

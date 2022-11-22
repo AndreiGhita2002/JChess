@@ -1,5 +1,6 @@
 package jchess.game;
 
+import org.json.JSONObject;
 public abstract class Move {
     public Condition condition;
 
@@ -11,4 +12,6 @@ public abstract class Move {
         // TODO is this the proper way of doing this??
         //   look up proper java way of implementing this
     }
+    
+    public abstract JSONObject toJSON();
 }

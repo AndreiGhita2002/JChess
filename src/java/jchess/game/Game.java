@@ -38,10 +38,9 @@ public class Game {
 
         // checking direct movement
         for (DirectMove dm : piece.type.directMoves) {
-            int dx = pos.x + dm.displacement.x;
-            int dy = piece.isWhite ? pos.y + dm.displacement.y : pos.y - dm.displacement.y;
-            if (checkCondition(piece, dm)) {
-                out.add(new Vec2(dx, dy));
+            if (checkCondition(piece, dm, pos)) {
+                out.add(new Vec2(pos.x + dm.displacement.x,
+                        piece.isWhite ? pos.y + dm.displacement.y : pos.y - dm.displacement.y));
             }
         }
         GameScene.possibleMoves = out;
@@ -51,6 +50,7 @@ public class Game {
         // TODO implement using checkCondition()
         Vec2 pos = piece.position;
         ArrayList<Vec2> out = new ArrayList<>();
+        // TODO do this using Vec and use checkCondition()
         for (int ix = pos.x + dir.x, iy = pos.y + dir.y;
              ix < scenario.terrain.dimensionX && iy < scenario.terrain.dimensionY;
              ix += dir.x, iy += dir.y) {
@@ -71,22 +71,31 @@ public class Game {
     }
 
     boolean outOfBounds(int x, int y) {
-        return x > scenario.terrain.dimensionX || y > scenario.terrain.dimensionY || x < 0 || y < 0;
+        return x > scenario.terrain.dimensionX - 1 || y > scenario.terrain.dimensionY - 1 || x < 0 || y < 0;
+    }
+    
+    boolean outOfBounds(Vec2 v) {
+        return outOfBounds(v.x, v.y);
     }
 
-    boolean checkCondition(Piece piece, Move move) {
+    boolean checkCondition(Piece piece, DirectMove move, Vec2 pos) {
         Condition con = move.condition;
-        Vec2 pos = piece.position.add(move.condition.place);
+        Vec2 dv = new Vec2(pos.x + move.displacement.x,
+                piece.isWhite ? pos.y + move.displacement.y : pos.y - move.displacement.y);
+        Vec2 conditionPos = dv.add(piece.isWhite ? con.place : con.place.getInverse());
+
+        if (outOfBounds(dv)) return false;
+        
         boolean valid;
         while (true) {
             String otherType = con.otherPiece;
-            Piece pieceAtPos = getPiece(pos);
+            Piece pieceAtPos = getPiece(conditionPos);
 
             // TODO what a mess, clean it up a bit!
             // testing if this condition is valid
             if (Objects.equals(otherType, "any")) {
                 valid = true;
-            } else if (Objects.equals(otherType, "opposite") && pieceAtPos != null
+            }  else if (Objects.equals(otherType, "opposite") && pieceAtPos != null
                     && pieceAtPos.isWhite != piece.isWhite) {
                 valid = true;
             } else if (Objects.equals(otherType, "same") && pieceAtPos != null
@@ -94,15 +103,26 @@ public class Game {
                 valid = true;
             } else if (Objects.equals(otherType, "empty") && pieceAtPos == null) {
                 valid = true;
+            } else if (Objects.equals(otherType, "any_opposite")) {
+                if (pieceAtPos == null) {
+                    valid = true;
+                } else {
+                    valid = pieceAtPos.isWhite != piece.isWhite;
+                }
             } else if (pieceAtPos == null) {
                 return false;
             } else valid = Objects.equals(otherType, pieceAtPos.type.getTypeName());
+            
+            if (con.tags.contains("not_moved") && piece.moved) {
+                valid = false;
+            }
+            
             if (!valid) return false;
 
             // advancing to the next condition in the chain
             if (con.next == null) break;
             con = con.next;
-            pos = piece.position.add(move.condition.place);
+            conditionPos = piece.position.add(con.place);
         }
         return true;
     }
@@ -183,6 +203,7 @@ public class Game {
         }
         history.add(new Pair<>(piece, target));
         piece.position = target;
+        piece.moved = true;
         turn++;
     }
 

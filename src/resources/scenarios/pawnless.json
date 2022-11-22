@@ -1,0 +1,23 @@
+{
+  "name": "pawnless",
+  "displayName": "Pawnless Chess",
+  "description": "Classic Chess without any pawns.",
+  "terrainType": "empty_rectangle",
+  "terrain": [8, 8],
+  "whiteStart": "high y",
+  "blackStart": "low y",
+  "whitePieces": {
+    "rook":   [0, 0, 7, 0],
+    "horse":  [1, 0, 6, 0],
+    "bishop": [2, 0, 5, 0],
+    "king":   [3, 0],
+    "queen":  [4, 0]
+  },
+  "blackPieces": {
+    "rook":   [0, 7, 7, 7],
+    "horse":  [1, 7, 6, 7],
+    "bishop": [2, 7, 5, 7],
+    "king":   [3, 7],
+    "queen":  [4, 7]
+  }
+}

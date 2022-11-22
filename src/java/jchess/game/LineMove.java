@@ -15,17 +15,21 @@ public class LineMove extends Move {
     }
 
     public String toString() {
-        JSONObject j = new JSONObject();
-        j.append("direction", direction.toString());
-        j.append("condition", condition.toString());
-        return j.toString();
+        return toJSON().toString();
     }
 
+    public JSONObject toJSON() {
+        JSONObject j = new JSONObject();
+        j.put("direction", direction.toJSON());
+        j.put("condition", condition.toJSON());
+        return j;
+    }
+    
     LineMove(String json) {
         super(json);
         JSONObject j = new JSONObject(json);
-        this.direction =  new Vec2(j.getString("direction"));
-        this.condition = new Condition(j.getString("condition"));
+        this.direction =  new Vec2(j.getJSONObject("direction"));
+        this.condition = new Condition(j.getJSONObject("condition"));
     }
 
     public LineMove(Vec2 direction, Condition condition) {
