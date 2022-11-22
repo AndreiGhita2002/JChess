@@ -1,7 +1,7 @@
 package jchess.game;
 
 import javafx.scene.image.Image;
-import jchess.ux.Controller;
+import jchess.ux.GameScene;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -99,39 +99,41 @@ public class PieceType {
         this.typeName = jsonObject.getString("typeName");
         checkable = jsonObject.getBoolean("checkable");
 
-        // loading the tags and direct moves arrays
-        JSONArray tagsJSON = jsonObject.getJSONArray("tags");
-        JSONArray directMovesJSON = jsonObject.getJSONArray("directMoves");
-        JSONArray lineMovesJSON = jsonObject.getJSONArray("lineMoves");
-
         // loading tags
         tags = new ArrayList<>();
-        for (Object tag : tagsJSON) {
-            this.tags.add((String)tag);
+        if (jsonObject.has("tags")) {
+            JSONArray tagsJSON = jsonObject.getJSONArray("tags");
+            for (Object tag : tagsJSON) {
+                this.tags.add((String)tag);
+            }
         }
-        // loading line moves
-        lineMoves = new ArrayList<>();
-        for (Object k : lineMovesJSON) {
-            this.lineMoves.add(new LineMove(k.toString()));
-        }
-        // loading direct moves
         directMoves = new ArrayList<>();
-        for (Object k : directMovesJSON) {
-            this.directMoves.add(new DirectMove(k.toString()));
+        if (jsonObject.has("directMoves")) {
+            JSONArray directMovesJSON = jsonObject.getJSONArray("directMoves");
+            for (Object k : directMovesJSON) {
+                this.directMoves.add(new DirectMove(k.toString()));
+            }
+        }
+        lineMoves = new ArrayList<>();
+        if (jsonObject.has("lineMoves")) {
+            JSONArray lineMovesJSON = jsonObject.getJSONArray("lineMoves");
+
+            for (Object k : lineMovesJSON) {
+                this.lineMoves.add(new LineMove(k.toString()));
+            }
         }
 
-        // loading the graphics
         if (doGraphics) {
             try {
                 graphicImageWhite = new Image("graphics/" + jsonObject.getString("graphicName") + "_white.png",
-                        Controller.squareSize, Controller.squareSize, false, false);
+                        GameScene.squareSize, GameScene.squareSize, false, false);
             } catch (IllegalArgumentException e) {
                 System.out.println("[!!!] Graphics not found at path:");
                 System.out.println("[!!!] graphics/" + jsonObject.getString("graphicName") + "_white.png");
             }
             try {
                 graphicImageBlack = new Image("graphics/" + jsonObject.getString("graphicName") + "_black.png",
-                        Controller.squareSize, Controller.squareSize, false, false);
+                        GameScene.squareSize, GameScene.squareSize, false, false);
             } catch (IllegalArgumentException e) {
                 System.out.println("[!!!] Graphics not found at path:");
                 System.out.println("[!!!] graphics/" + jsonObject.getString("graphicName") + "_black.png");

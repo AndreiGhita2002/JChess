@@ -2,7 +2,7 @@ package jchess.game;
 
 import jchess.util.Pair;
 import jchess.util.Vec2;
-import jchess.ux.Controller;
+import jchess.ux.GameScene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class Game {
                 out.add(new Vec2(dx, dy));
             }
         }
-        Controller.possibleMoves = out;
+        GameScene.possibleMoves = out;
     }
     
     ArrayList<Vec2> drawLine(Piece piece, Vec2 dir, Condition condition) {
@@ -165,7 +165,7 @@ public class Game {
                 for (Piece blackPiece : blackPieces) {
                     if (blackPiece.position.equals(target)) {
                         blackPieces.remove(blackPiece);
-                        Controller.removeGraphicPiece(blackPiece);
+                        GameScene.removeGraphicPiece(blackPiece);
                         break;
                     }
                 }
@@ -173,7 +173,7 @@ public class Game {
                 for (Piece whitePiece : whitePieces) {
                     if (whitePiece.position.equals(target)) {
                         whitePieces.remove(whitePiece);
-                        Controller.removeGraphicPiece(whitePiece);
+                        GameScene.removeGraphicPiece(whitePiece);
                         break;
                     }
                 }

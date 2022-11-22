@@ -10,7 +10,7 @@ public class GraphicPiece extends ImageView {
     boolean isWhite;
 
     void refresh() {
-        Vec2 v = Controller.getPixelPos(piece.position);
+        Vec2 v = GameScene.getPixelPos(piece.position);
         relocate(v.x, v.y);
     }
 
@@ -19,32 +19,32 @@ public class GraphicPiece extends ImageView {
         this.isWhite = isWhite;
         Image image = isWhite ? piece.type.graphicImageWhite : piece.type.graphicImageBlack;
         this.setImage(image);
-        this.setFitWidth(Controller.squareSize);
-        this.setFitHeight(Controller.squareSize);
+        this.setFitWidth(GameScene.squareSize);
+        this.setFitHeight(GameScene.squareSize);
 
         this.setOnMouseReleased(event -> {
-            if (Controller.selectedPiece == null) { // if no piece is selected
-                Controller.selectedPiece = this;
-                Controller.game.getAllPossibleMoves(piece);
-                Controller.drawPossibleMoves();
-            } else if (Controller.selectedPiece == this) { // if this piece is selected
-                Controller.selectedPiece = null;
-                Controller.possibleMovesIcons.getChildren().clear();
-                Controller.possibleMoves = null;
+            if (GameScene.selectedPiece == null) { // if no piece is selected
+                GameScene.selectedPiece = this;
+                GameScene.game.getAllPossibleMoves(piece);
+                GameScene.drawPossibleMoves();
+            } else if (GameScene.selectedPiece == this) { // if this piece is selected
+                GameScene.selectedPiece = null;
+                GameScene.possibleMovesIcons.getChildren().clear();
+                GameScene.possibleMoves = null;
             } else { // if there is a selected piece
-                if (Controller.possibleMoves.contains(new Vec2(piece.position.x, piece.position.y))) {
+                if (GameScene.possibleMoves.contains(new Vec2(piece.position.x, piece.position.y))) {
                     // if this piece can be taken by selected piece
-                    Controller.movePiece(piece.position);
+                    GameScene.movePiece(piece.position);
                 } else {
                     // if selected piece can't move here
                     // select this piece instead
-                    Controller.possibleMovesIcons.getChildren().clear();
-                    Controller.selectedPiece = this;
-                    Controller.game.getAllPossibleMoves(piece);
-                    Controller.drawPossibleMoves();
+                    GameScene.possibleMovesIcons.getChildren().clear();
+                    GameScene.selectedPiece = this;
+                    GameScene.game.getAllPossibleMoves(piece);
+                    GameScene.drawPossibleMoves();
                 }
             }
-            System.out.println(" Selected piece: " + Controller.selectedPiece);
+            System.out.println(" Selected piece: " + GameScene.selectedPiece);
         });
     }
 }
