@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 public class MainMenuScene extends Scene {
     static Group root;
 
-    public MainMenuScene(Parent parent) {
+    public MainMenuScene(Parent parent, Theme theme) {
         super(parent, Controller.H, Controller.W);
         Controller.setTitle("quirky chess - main menu");
 
@@ -30,6 +30,7 @@ public class MainMenuScene extends Scene {
         quitButton.setOnAction((e) -> Controller.quitApplication());
         vBox.getChildren().add(quitButton);
 
-
+        // drawing the background
+        this.setFill(theme.background_colour);
     }
 }

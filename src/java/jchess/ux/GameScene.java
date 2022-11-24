@@ -19,12 +19,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GameScene extends Scene {
-    public static final Color light_colour = Color.NAVAJOWHITE;
-    public static final Color dark_colour = Color.SADDLEBROWN;
-    public static final Color background_colour = Color.BEIGE;
-    public static final Color line_colour = Color.BLACK;
-    public static final Color font_colour = Color.BLACK;
-
+    static Theme theme;
     static Group root;
     static Group possibleMovesIcons;
     static Group debugGroup;
@@ -40,8 +35,9 @@ public class GameScene extends Scene {
     public static ArrayList<GraphicPiece> graphicPieces;
     public static List<Vec2> possibleMoves;
 
-    public GameScene(Parent parent, String scenarioName) {
+    public GameScene(Parent parent, Theme theme, String scenarioName) {
         super(parent, Controller.W, Controller.H);
+        GameScene.theme = theme;
         Controller.setTitle("quirky chess - game board");
         initGame(scenarioName);
 
@@ -237,26 +233,26 @@ public class GameScene extends Scene {
         int dimY = game.scenario.terrain.dimensionY;
 
         // drawing the background
-        gc.setFill(background_colour);
+        gc.setFill(theme.background_colour);
         gc.fillRect(0, 0, Controller.W, Controller.H);
 
         // drawing the board
         int counter = 0;
-        gc.setStroke(line_colour);
+        gc.setStroke(theme.line_colour);
         gc.setLineWidth(2);
         gc.setFont(Font.font(30));
         for (int i = 1; i <= dimX; i++) {
-            gc.setStroke(font_colour);
-            gc.setFill(font_colour);
+            gc.setStroke(theme.font_colour);
+            gc.setFill(theme.font_colour);
             gc.strokeText(String.valueOf(i), half + 20, i * squareSize + half + 10);
             for (int j = 1; j <= dimY; j++) {
-                gc.setStroke(font_colour);
-                gc.setFill(font_colour);
+                gc.setStroke(theme.font_colour);
+                gc.setFill(theme.font_colour);
                 gc.strokeText(String.valueOf(i), i * squareSize + half - 10, half + 40);
                 if (game.scenario.terrain.collisionMatrix.get(j-1).get(i-1) != 1) {
-                    gc.setFill((counter % 2 == 0 ? light_colour : dark_colour));
+                    gc.setFill((counter % 2 == 0 ? theme.light_colour : theme.dark_colour));
                     gc.fillRect(i * squareSize - half + offsetX, j * squareSize - half + offsetY, squareSize, squareSize);
-                    gc.setStroke(line_colour);
+                    gc.setStroke(theme.line_colour);
                     gc.strokeRect(i * squareSize - half + offsetX, j * squareSize - half + offsetY, squareSize, squareSize);
                     counter++;
                 }

@@ -8,11 +8,16 @@ import javafx.stage.Stage;
 public class Controller extends Application {
     public static final int W = 1000;
     public static final int H = 1000;
+    public static Theme globalTheme;
     private static Stage stage;
 
     @Override
     public void start(Stage stage) {
+        // initializing global things
         Controller.stage = stage;
+        globalTheme = new Theme();
+
+        // setting the scene to main menu
         changeScene(GUIStates.MAIN_MENU);
 
         // closing the application
@@ -35,13 +40,10 @@ public class Controller extends Application {
         Group root = new Group();
         Scene scene;
         switch (newScene) {
-            case MAIN_MENU -> scene = new MainMenuScene(root);
-            case GAME_BOARD -> scene = new GameScene(root, option);
+            case MAIN_MENU -> scene = new MainMenuScene(root, globalTheme);
+            case GAME_BOARD -> scene = new GameScene(root, globalTheme, option);
             default -> {
-                System.out.println("[!!!] Something bad in Controller.changeScene(" +
-                        newScene +
-                        option +
-                        ")!!");
+                System.out.println("[!!!] Something bad in Controller.changeScene(" + newScene + option + ")!!");
                 return;
             }
         }
