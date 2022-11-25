@@ -101,14 +101,16 @@ public class GameScene extends Scene {
 
     static void movePiece(Vec2 targetBoardPos) {
         // moving the piece
-        game.move(selectedPiece.piece, targetBoardPos);
-        // refreshing the selected piece
-        selectedPiece.refresh();
-        selectedPiece = null;
-        // resetting possible moves
-        possibleMoves = new ArrayList<>();
-        possibleMovesIcons.getChildren().clear();
-        System.out.println("Piece moved at " + targetBoardPos);
+        boolean valid = game.move(selectedPiece.piece, targetBoardPos);
+        if (valid) {
+            // refreshing the selected piece
+            selectedPiece.refresh();
+            selectedPiece = null;
+            // resetting possible moves
+            possibleMoves = new ArrayList<>();
+            possibleMovesIcons.getChildren().clear();
+            System.out.println("Piece moved at " + targetBoardPos);
+        } else System.out.println("Not your turn!");
     }
 
     static public void drawPossibleMoves() {

@@ -47,10 +47,9 @@ public class Game {
     }
     
     ArrayList<Vec2> drawLine(Piece piece, Vec2 dir, Condition condition) {
-        // TODO implement using checkCondition()
+        // TODO do this using Vec and use checkCondition()
         Vec2 pos = piece.position;
         ArrayList<Vec2> out = new ArrayList<>();
-        // TODO do this using Vec and use checkCondition()
         for (int ix = pos.x + dir.x, iy = pos.y + dir.y;
              ix < scenario.terrain.dimensionX && iy < scenario.terrain.dimensionY;
              ix += dir.x, iy += dir.y) {
@@ -63,9 +62,7 @@ public class Game {
                 // space with enemy piece
                 out.add(new Vec2(ix, iy));
                 break;
-            } else {
-                break;
-            }
+            } else break;
         }
         return out;
     }
@@ -176,10 +173,12 @@ public class Game {
         return null;
     }
 
-    public void move(Piece piece, Vec2 target) {
+    public boolean move(Piece piece, Vec2 target) {
         // target is absolute
         // assume that target is legal
         // taking the piece
+        if (turn % 2 == 0 && piece.isWhite || turn % 2 == 1 && !piece.isWhite)
+            return false;
         if (!checkIfFree(target.x, target.y)) {
             if (piece.isWhite) {
                 for (Piece blackPiece : blackPieces) {
@@ -205,6 +204,7 @@ public class Game {
         piece.position = target;
         piece.moved = true;
         turn++;
+        return true;
     }
 
     void printState() {
