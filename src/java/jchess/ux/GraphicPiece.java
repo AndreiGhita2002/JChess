@@ -1,5 +1,6 @@
 package jchess.ux;
 
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import jchess.game.Piece;
@@ -9,9 +10,16 @@ public class GraphicPiece extends ImageView {
     Piece piece;
     boolean isWhite;
 
-    void refresh() {
+    public void refresh() {
         Vec2 v = GameScene.getPixelPos(piece.position);
         relocate(v.x, v.y);
+    }
+    
+    public void toggleHighlight() {
+        if (getEffect() == null) {
+            setEffect(new Glow(0.7));
+//            setEffect(new ColorAdjust(1.5, 1.5, 1.0, 1.0));
+        } else setEffect(null);
     }
 
     GraphicPiece(Piece piece, boolean isWhite) {

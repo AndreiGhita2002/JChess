@@ -75,6 +75,9 @@ public class GameScene extends Scene {
                     int inputY = scanner.nextInt();
                     drawDiagonals(new Vec2(inputX, inputY));
                 }
+                case G -> {
+                    selectedPiece.toggleHighlight();
+                }
             }
         });
 
