@@ -95,8 +95,7 @@ public class GameScene extends Scene {
                     movePiece(boardPos);
                 } else {
                     // if piece is selected, but move isn't legal
-                    //TODO maybe add more feedback
-                    System.out.println("sucks to suck (move illegal)");
+                    System.out.println("Move Illegal!");
                 }
             }
         });
