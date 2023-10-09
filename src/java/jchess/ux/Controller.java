@@ -42,8 +42,9 @@ public class Controller extends Application {
         switch (newScene) {
             case MAIN_MENU -> scene = new MainMenuScene(root, globalTheme);
             case GAME_BOARD -> scene = new GameScene(root, globalTheme, option);
+            case SCENARIO_SELECT -> scene = new ScenarioSelectScene(root, globalTheme);
             default -> {
-                System.out.println("[!!!] Something bad in Controller.changeScene(" + newScene + option + ")!!");
+                System.out.println("[!!!] This should not have happened in Controller.changeScene(" + newScene + option + ")!!");
                 return;
             }
         }

@@ -6,17 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 public class MainMenuScene extends Scene {
     static Group root;
-    static String scenariosPath = "/Users/andrei/IdeaProjects/JChess/src/resources/scenarios";
 
     public MainMenuScene(Parent parent, Theme theme) {
         super(parent, Controller.H, Controller.W);
-        Controller.setTitle("quirky chess - main menu");
+        Controller.setTitle("JChess - Main Menu");
 
         // initializing the menu:
         root = (Group) parent;
@@ -32,13 +27,7 @@ public class MainMenuScene extends Scene {
         
         // Pre-made Scenarios Button
         Button preMadeButton = new Button("Load Scenario");
-        preMadeButton.setOnAction((e) -> {
-            try {
-                System.out.println(Files.list(Path.of(scenariosPath)).toList());
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-        });
+        preMadeButton.setOnAction((e) -> Controller.changeScene(GUIStates.SCENARIO_SELECT));
         vBox.getChildren().add(preMadeButton);
         
         // Import Scenario Button

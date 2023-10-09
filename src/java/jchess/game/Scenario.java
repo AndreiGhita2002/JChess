@@ -20,10 +20,10 @@ public class Scenario {
     public ArrayList<Piece> blackPieces;
     public ArrayList<MultiMove> multiMoves; //TODO properly implement this
 
-    public Scenario(String scenariosName) {
-        name = scenariosName;
+    public Scenario(String scenarioName) {
+        name = scenarioName;
         String fileString;
-        String fileName = "scenarios/" + scenariosName + ".json";
+        String fileName = "scenarios/" + scenarioName + ".json";
 
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
         if (inputStream == null) {
@@ -89,5 +89,10 @@ public class Scenario {
                 blackPieces.add(new Piece(pos, p, false));
             }
         }
+    }
+    
+    public static boolean isValidScenario(String file) {
+        // todo placeholder method
+        return true;
     }
 }

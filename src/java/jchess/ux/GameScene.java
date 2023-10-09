@@ -38,7 +38,7 @@ public class GameScene extends Scene {
     public GameScene(Parent parent, Theme theme, String scenarioName) {
         super(parent, Controller.W, Controller.H);
         GameScene.theme = theme;
-        Controller.setTitle("quirky chess - game board");
+        Controller.setTitle("JChess - Game Board");
         initGame(scenarioName);
 
         // initializing the ui
