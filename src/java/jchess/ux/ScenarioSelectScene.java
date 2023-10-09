@@ -56,7 +56,7 @@ public class ScenarioSelectScene extends Scene {
         if (files == null) return;
         scenarioList = new ArrayList<>();
         for (File file : files) {
-            scenarioList.add(file.getName().replaceFirst(".json", ""));
+            scenarioList.add(file.getName().replaceFirst(scenarioExtension, ""));
         }
     }
 }
