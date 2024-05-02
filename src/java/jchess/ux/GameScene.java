@@ -64,10 +64,7 @@ public class GameScene extends Scene {
         // Listener for keyboard inputs
         this.setOnKeyReleased(keyEvent -> {
             switch (keyEvent.getCode()) {
-                case R -> //!!!!!// TEST THIS //!!!!!//
-                        initGame(scenarioName);
                 case T -> debugGroup.setVisible(!debugGroup.isVisible());
-                case B -> System.out.println("bruh");
                 case D -> {
                     System.out.println("§ Input x and y:");
                     Scanner scanner = new Scanner(System.in);
@@ -109,8 +106,7 @@ public class GameScene extends Scene {
             selectedPiece.refresh();
             selectedPiece = null;
             // resetting possible moves
-            possibleMoves = new ArrayList<>();
-            possibleMovesIcons.getChildren().clear();
+            resetPossibleMoves();
             System.out.println("Piece moved at " + targetBoardPos);
         } else System.out.println("Not your turn!");
     }
@@ -129,6 +125,11 @@ public class GameScene extends Scene {
             circle.mouseTransparentProperty().setValue(true);
         }
         possibleMovesIcons.getChildren().addAll(circles);
+    }
+    
+    public static void resetPossibleMoves() {
+        possibleMoves = new ArrayList<>();
+        possibleMovesIcons.getChildren().clear();
     }
 
     static public void removeGraphicPiece(Piece piece) {
@@ -231,7 +232,7 @@ public class GameScene extends Scene {
             graphicPieces.add(new GraphicPiece(p, false));
         }
     }
-
+    
     private void renderBackground(GraphicsContext gc, Game game) {
         int dimX = game.scenario.terrain.dimensionX;
         int dimY = game.scenario.terrain.dimensionY;
