@@ -3,6 +3,7 @@ package jchess.ux;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class Controller extends Application {
@@ -50,6 +51,10 @@ public class Controller extends Application {
         }
         stage.setScene(scene);
         stage.show();
+    }
+    
+    public static void setPopup(Popup popup) {
+        popup.show(stage);
     }
 
     static void setTitle(String title) {

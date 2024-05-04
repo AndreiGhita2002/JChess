@@ -13,7 +13,7 @@ public class Game {
     public ArrayList<Piece> blackPieces;
     public List<Pair<Piece, Vec2>> history;
     public Scenario scenario;
-    public int turn;
+    public int turn;  // should be renamed a ply (chess term)
 
     public Game(Scenario scenario) {
         // loading the scenario
@@ -145,7 +145,9 @@ public class Game {
         return true;
     }
     
-    Pair<Boolean, Piece> checkCheckMate(boolean forWhite) {
+    public Pair<Boolean, Piece> checkCheckMate() {
+        boolean forWhite = turn % 2 == 1;
+        
         ArrayList<Piece> activePieces = forWhite ? whitePieces : blackPieces;
         ArrayList<Piece> enemyPieces = forWhite ? blackPieces : whitePieces;
         

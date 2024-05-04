@@ -6,12 +6,15 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.stage.Popup;
 import jchess.game.Game;
 import jchess.game.Piece;
 import jchess.game.Scenario;
+import jchess.util.Pair;
 import jchess.util.Vec2;
 
 import java.util.ArrayList;
@@ -108,10 +111,34 @@ public class GameScene extends Scene {
             // resetting possible moves
             resetPossibleMoves();
             System.out.println("Piece moved at " + targetBoardPos);
+            // check if the game has ended
+            checkEndGameState();
         } else System.out.println("Not your turn!");
     }
-
-    static public void drawPossibleMoves() {
+    
+    static void checkEndGameState() {
+        // 1. checkmate
+        // 2. draw
+        //   a. no legal moves
+        //   b. if the same position is reached 3 times in a game (not in a row)
+        //       --> use checksums; don't compare every position in history!!
+        //   c. 40 move rule: maybe would depend on scenario?
+        //   d. scenario draw
+    
+        // 1. checkmate
+        Pair<Boolean, Piece> isCheckmate = game.checkCheckMate();
+        if (isCheckmate.left()) {
+            // spawning a popup
+            String winner = isCheckmate.right().isWhite ? "White" : "Block";
+            Label label = new Label(winner + " is victorious!");
+            label.setStyle(" -fx-background-color: white;");
+            Popup popup = new Popup();
+            popup.getContent().add(label);
+            Controller.setPopup(popup);
+        }
+    }
+    
+    public static void drawPossibleMoves() {
         final Color goodColour = Color.rgb(0, 200, 0, 0.3);
         final Color badColour = Color.rgb(200, 200, 0, 0.3);
         ArrayList<Circle> circles = new ArrayList<>();
