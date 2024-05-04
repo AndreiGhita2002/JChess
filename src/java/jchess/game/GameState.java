@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Game {
+public class GameState {
     public ArrayList<Piece> whitePieces;
     public ArrayList<Piece> blackPieces;
     public List<Pair<Piece, Vec2>> history;
     public Scenario scenario;
     public int turn;  // should be renamed a ply (chess term)
 
-    public Game(Scenario scenario) {
+    public GameState(Scenario scenario) {
         // loading the scenario
         this.scenario = scenario;
         whitePieces = scenario.whitePieces;

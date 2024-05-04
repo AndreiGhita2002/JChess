@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Popup;
-import jchess.game.Game;
+import jchess.game.GameState;
 import jchess.game.Piece;
 import jchess.game.Scenario;
 import jchess.util.Pair;
@@ -34,7 +34,7 @@ public class GameScene extends Scene {
     public static final int offsetY = 50;
     public static int half;
 
-    public static Game game;
+    public static GameState game;
     public static ArrayList<GraphicPiece> graphicPieces;
     public static List<Vec2> possibleMoves;
 
@@ -244,7 +244,7 @@ public class GameScene extends Scene {
 
     static void initGame(String scenarioName) {
         // initializing the game
-        game = new Game(new Scenario(scenarioName));
+        game = new GameState(new Scenario(scenarioName));
 
         int squareSizeX = (Controller.W - 200) / game.scenario.terrain.dimensionX;
         int squareSizeY = (Controller.H - 200) / game.scenario.terrain.dimensionY;
@@ -260,7 +260,7 @@ public class GameScene extends Scene {
         }
     }
     
-    private void renderBackground(GraphicsContext gc, Game game) {
+    private void renderBackground(GraphicsContext gc, GameState game) {
         int dimX = game.scenario.terrain.dimensionX;
         int dimY = game.scenario.terrain.dimensionY;
 

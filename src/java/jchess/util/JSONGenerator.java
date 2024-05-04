@@ -100,7 +100,7 @@ public class JSONGenerator {
     public static void main(String[] args) {
         // init
         PieceType.doGraphics = false;
-        Game game = new Game(new Scenario("nothing"));
+        GameState game = new GameState(new Scenario("nothing"));
         PieceType.tryFirstTimeInit();
         String output = "";
         
