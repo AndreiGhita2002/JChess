@@ -33,7 +33,7 @@ public class GraphicPiece extends ImageView {
         this.setOnMouseReleased(event -> {
             if (GameScene.selectedPiece == null) { // if no piece is selected
                 GameScene.selectedPiece = this;
-                GameScene.game.getAllPossibleMoves(piece);
+                GameScene.possibleMoves = GameScene.game.getAllPossibleMoves(piece);
                 GameScene.drawPossibleMoves();
             } else if (GameScene.selectedPiece == this) { // if this piece is selected
                 GameScene.selectedPiece = null;
@@ -48,7 +48,7 @@ public class GraphicPiece extends ImageView {
                     // select this piece instead
                     GameScene.possibleMovesIcons.getChildren().clear();
                     GameScene.selectedPiece = this;
-                    GameScene.game.getAllPossibleMoves(piece);
+                    GameScene.possibleMoves = GameScene.game.getAllPossibleMoves(piece);
                     GameScene.drawPossibleMoves();
                 }
             }

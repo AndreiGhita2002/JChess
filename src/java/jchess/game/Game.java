@@ -24,7 +24,7 @@ public class Game {
         history = new ArrayList<>();
     }
 
-    public void getAllPossibleMoves(Piece piece) {
+    public List<Vec2> getAllPossibleMoves(Piece piece) {
         List<Vec2> out = new ArrayList<>();
         Vec2 pos = piece.position;
         
@@ -43,7 +43,7 @@ public class Game {
                         piece.isWhite ? pos.y + dm.displacement.y : pos.y - dm.displacement.y));
             }
         }
-        GameScene.possibleMoves = out;
+        return out;
     }
     
     ArrayList<Vec2> drawLine(Piece piece, Vec2 dir, Condition condition) {
@@ -143,6 +143,56 @@ public class Game {
             }
         }
         return true;
+    }
+    
+    Pair<Boolean, Piece> checkCheckMate(boolean forWhite) {
+        ArrayList<Piece> activePieces = forWhite ? whitePieces : blackPieces;
+        ArrayList<Piece> enemyPieces = forWhite ? blackPieces : whitePieces;
+        
+        // dangerMask stores the tiles that the enemy threatens
+        // access piece at (x, y) with dangerMask[y * dimenstionY + x]
+        // false = safe for king, true = unsafe for king
+        ArrayList<Boolean> dangerMask = new ArrayList<>();
+        // initialing
+        for (int i = 0; i < scenario.terrain.dimensionY; i++) {
+            for (int j = 0; j < scenario.terrain.dimensionX; j++) {
+                dangerMask.add(false);
+            }
+        }
+        // populating
+        for (Piece enemy : enemyPieces) {
+            List<Vec2> moves = getAllPossibleMoves(enemy);
+            for (Vec2 move : moves) {
+                int i = move.y * scenario.terrain.dimensionY + move.x;
+                dangerMask.set(i, true);
+            }
+        }
+        
+        // for every checkable piece
+        for (Piece piece : activePieces) {
+            if (piece.type.checkable) {
+                // 1. check if position is threatened
+                int i = piece.position.y * scenario.terrain.dimensionY + piece.position.x;
+                if (!dangerMask.get(i)) {
+                    // if piece is not threatened, then it cannot be in checkmate
+                    continue;
+                }
+                // 2. check if it can move
+                boolean canMove = false;
+                for (Vec2 move : getAllPossibleMoves(piece)) {
+                    i = move.y * scenario.terrain.dimensionY + move.x;
+                    if (!dangerMask.get(i)) {
+                        // there is somewhere the piece can move
+                        canMove = true;
+                        break;
+                    }
+                }
+                if (!canMove) {
+                    return new Pair<>(true, piece);
+                }
+            }
+        }
+        return new Pair<>(false, null);
     }
     
     Piece getPiece(int x, int y) {
