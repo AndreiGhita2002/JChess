@@ -34,9 +34,9 @@ public class GameScene extends Scene {
     public static final int offsetY = 50;
     public static int half;
 
-    public static GameState game;
+    public static GameState gameState;
     public static ArrayList<GraphicPiece> graphicPieces;
-    public static List<Vec2> possibleMoves;
+    public static List<Vec2> possibleMovesOfSelected;
 
     public GameScene(Parent parent, Theme theme, String scenarioName) {
         super(parent, Controller.W, Controller.H);
@@ -52,7 +52,7 @@ public class GameScene extends Scene {
         root.getChildren().add(boardCanvas);
         root.getChildren().add(possibleMovesIcons);
         root.getChildren().add(debugGroup);
-        renderBackground(boardCanvas.getGraphicsContext2D(), game);
+        renderBackground(boardCanvas.getGraphicsContext2D(), gameState);
 
         // creating the graphicPieces array
         graphicPieces.forEach((gp) -> {root.getChildren().add(gp); gp.refresh();});
@@ -90,7 +90,7 @@ public class GameScene extends Scene {
                 possibleMovesIcons.getChildren().clear();
                 selectedPiece = null;
             } else if (selectedPiece != null) {
-                boolean legalMove = possibleMoves.contains(boardPos);
+                boolean legalMove = possibleMovesOfSelected.contains(boardPos);
                 if (legalMove) {
                     movePiece(boardPos);
                 } else {
@@ -103,7 +103,7 @@ public class GameScene extends Scene {
 
     static void movePiece(Vec2 targetBoardPos) {
         // moving the piece
-        boolean valid = game.move(selectedPiece.piece, targetBoardPos);
+        boolean valid = gameState.move(selectedPiece.piece, targetBoardPos);
         if (valid) {
             // refreshing the selected piece
             selectedPiece.refresh();
@@ -126,7 +126,7 @@ public class GameScene extends Scene {
         //   d. scenario draw
     
         // 1. checkmate
-        Pair<Boolean, Piece> isCheckmate = game.checkCheckMate();
+        Pair<Boolean, Piece> isCheckmate = gameState.checkCheckMate();
         if (isCheckmate.left()) {
             // spawning a popup
             String winner = isCheckmate.right().isWhite ? "White" : "Block";
@@ -143,9 +143,9 @@ public class GameScene extends Scene {
         final Color badColour = Color.rgb(200, 200, 0, 0.3);
         ArrayList<Circle> circles = new ArrayList<>();
 
-        for (Vec2 move : possibleMoves) {
+        for (Vec2 move : possibleMovesOfSelected) {
             Vec2 pos = getPixelPos(move);
-            Color colour = selectedPiece.piece.isWhite == (game.turn % 2 == 1) ? goodColour : badColour;
+            Color colour = selectedPiece.piece.isWhite == (gameState.turn % 2 == 1) ? goodColour : badColour;
             Circle circle = new Circle(pos.x + half, pos.y + half,
                     half / 1.5, colour);
             circles.add(circle);
@@ -155,7 +155,7 @@ public class GameScene extends Scene {
     }
     
     public static void resetPossibleMoves() {
-        possibleMoves = new ArrayList<>();
+        possibleMovesOfSelected = new ArrayList<>();
         possibleMovesIcons.getChildren().clear();
     }
 
@@ -187,8 +187,8 @@ public class GameScene extends Scene {
     static public Vec2 getBoardPos(int x, int y) {
         Vec2 out = new Vec2((x + half - offsetX) / squareSize - 1,
                 (y + half - offsetY) / squareSize - 1);
-        if (out.x > game.scenario.terrain.dimensionX || out.x < 0
-                || out.y > game.scenario.terrain.dimensionY || out.y < 0) {
+        if (out.x > gameState.scenario.terrain.dimensionX || out.x < 0
+                || out.y > gameState.scenario.terrain.dimensionY || out.y < 0) {
             return null;
         }
         return out;
@@ -201,7 +201,7 @@ public class GameScene extends Scene {
 
         // up right + +
         for (int ix = x + 1, iy = y + 1;
-             ix < game.scenario.terrain.dimensionX && iy < game.scenario.terrain.dimensionY;
+             ix < gameState.scenario.terrain.dimensionX && iy < gameState.scenario.terrain.dimensionY;
              ix++, iy++) {
             Vec2 pixels = getPixelPos(ix, iy);
             Circle circle = new Circle(pixels.x + half, pixels.y + half,
@@ -211,7 +211,7 @@ public class GameScene extends Scene {
         }
         // up left - +
         for (int ix = x - 1, iy = y + 1;
-             ix >= 0 && iy < game.scenario.terrain.dimensionY;
+             ix >= 0 && iy < gameState.scenario.terrain.dimensionY;
              ix--, iy++) {
             Vec2 pixels = getPixelPos(ix, iy);
             Circle circle = new Circle(pixels.x + half, pixels.y + half,
@@ -221,7 +221,7 @@ public class GameScene extends Scene {
         }
         // down right + -
         for (int ix = x + 1, iy = y - 1;
-             ix < game.scenario.terrain.dimensionX && iy >= 0;
+             ix < gameState.scenario.terrain.dimensionX && iy >= 0;
              ix++, iy--) {
             Vec2 pixels = getPixelPos(ix, iy);
             Circle circle = new Circle(pixels.x + half, pixels.y + half,
@@ -244,18 +244,18 @@ public class GameScene extends Scene {
 
     static void initGame(String scenarioName) {
         // initializing the game
-        game = new GameState(new Scenario(scenarioName));
+        gameState = new GameState(new Scenario(scenarioName));
 
-        int squareSizeX = (Controller.W - 200) / game.scenario.terrain.dimensionX;
-        int squareSizeY = (Controller.H - 200) / game.scenario.terrain.dimensionY;
+        int squareSizeX = (Controller.W - 200) / gameState.scenario.terrain.dimensionX;
+        int squareSizeY = (Controller.H - 200) / gameState.scenario.terrain.dimensionY;
         squareSize = Math.min(squareSizeX, squareSizeY);
         half = squareSize / 2;
 
         graphicPieces = new ArrayList<>();
-        for (Piece p : game.whitePieces) {
+        for (Piece p : gameState.whitePieces) {
             graphicPieces.add(new GraphicPiece(p, true));
         }
-        for (Piece p : game.blackPieces) {
+        for (Piece p : gameState.blackPieces) {
             graphicPieces.add(new GraphicPiece(p, false));
         }
     }

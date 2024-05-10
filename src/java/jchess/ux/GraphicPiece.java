@@ -33,14 +33,14 @@ public class GraphicPiece extends ImageView {
         this.setOnMouseReleased(event -> {
             if (GameScene.selectedPiece == null) { // if no piece is selected
                 GameScene.selectedPiece = this;
-                GameScene.possibleMoves = GameScene.game.getAllPossibleMoves(piece);
+                GameScene.possibleMovesOfSelected = GameScene.gameState.getAllPossibleMoves(piece);
                 GameScene.drawPossibleMoves();
             } else if (GameScene.selectedPiece == this) { // if this piece is selected
                 GameScene.selectedPiece = null;
                 GameScene.possibleMovesIcons.getChildren().clear();
-                GameScene.possibleMoves = null;
+                GameScene.possibleMovesOfSelected = null;
             } else { // if there is a selected piece
-                if (GameScene.possibleMoves.contains(new Vec2(piece.position.x, piece.position.y))) {
+                if (GameScene.possibleMovesOfSelected.contains(new Vec2(piece.position.x, piece.position.y))) {
                     // if this piece can be taken by selected piece
                     GameScene.movePiece(piece.position);
                 } else {
@@ -48,7 +48,7 @@ public class GraphicPiece extends ImageView {
                     // select this piece instead
                     GameScene.possibleMovesIcons.getChildren().clear();
                     GameScene.selectedPiece = this;
-                    GameScene.possibleMoves = GameScene.game.getAllPossibleMoves(piece);
+                    GameScene.possibleMovesOfSelected = GameScene.gameState.getAllPossibleMoves(piece);
                     GameScene.drawPossibleMoves();
                 }
             }
