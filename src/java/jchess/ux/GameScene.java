@@ -28,6 +28,7 @@ public class GameScene extends Scene {
     static Group debugGroup;
     static Canvas boardCanvas;
     static GraphicPiece selectedPiece;
+    static Button quitButton;
 
     public static int squareSize;
     public static final int offsetX = 50;
@@ -52,13 +53,13 @@ public class GameScene extends Scene {
         root.getChildren().add(boardCanvas);
         root.getChildren().add(possibleMovesIcons);
         root.getChildren().add(debugGroup);
-        renderBackground(boardCanvas.getGraphicsContext2D(), gameState);
+        renderBackground();
 
         // creating the graphicPieces array
         graphicPieces.forEach((gp) -> {root.getChildren().add(gp); gp.refresh();});
 
         // adding a button for exiting the current game
-        Button quitButton = new Button("Return to Main Menu");
+        quitButton = new Button("Return to Main Menu");
         quitButton.setOnAction((e) -> Controller.changeScene(GUIStates.MAIN_MENU));
         root.getChildren().add(quitButton);
         quitButton.setLayoutX(Controller.W - 150);
@@ -99,6 +100,14 @@ public class GameScene extends Scene {
                 }
             }
         });
+        
+        // resize listener
+        this.widthProperty().addListener(
+                (observable, oldWidth, newWidth) -> resizeComponents(newWidth.intValue(), Controller.H)
+        );
+        this.heightProperty().addListener(
+                (observable, oldHeight, newHeight) -> resizeComponents(Controller.W, newHeight.intValue())
+        );
     }
 
     static void movePiece(Vec2 targetBoardPos) {
@@ -245,13 +254,10 @@ public class GameScene extends Scene {
     static void initGame(String scenarioName) {
         // initializing the game
         gameState = new GameState(new Scenario(scenarioName));
-
-        int squareSizeX = (Controller.W - 200) / gameState.scenario.terrain.dimensionX;
-        int squareSizeY = (Controller.H - 200) / gameState.scenario.terrain.dimensionY;
-        squareSize = Math.min(squareSizeX, squareSizeY);
-        half = squareSize / 2;
-
         graphicPieces = new ArrayList<>();
+        
+        resizeComponents(Controller.W, Controller.H);
+        
         for (Piece p : gameState.whitePieces) {
             graphicPieces.add(new GraphicPiece(p, true));
         }
@@ -260,9 +266,28 @@ public class GameScene extends Scene {
         }
     }
     
-    private void renderBackground(GraphicsContext gc, GameState game) {
-        int dimX = game.scenario.terrain.dimensionX;
-        int dimY = game.scenario.terrain.dimensionY;
+    private static void resizeComponents(int width, int height) {
+        if (boardCanvas != null) {
+            boardCanvas.widthProperty().setValue(width);
+            boardCanvas.heightProperty().setValue(height);
+            renderBackground();
+        }
+        if (quitButton != null) {
+            quitButton.setLayoutX(width - 150);
+            quitButton.setLayoutY(height - 27);
+        }
+        if (gameState != null) {
+            int squareSizeX = (width - 200) / gameState.scenario.terrain.dimensionX;
+            int squareSizeY = (height - 200) / gameState.scenario.terrain.dimensionY;
+            squareSize = Math.min(squareSizeX, squareSizeY);
+            half = squareSize / 2;
+        }
+    }
+    
+    private static void renderBackground() {
+        GraphicsContext gc = boardCanvas.getGraphicsContext2D();
+        int dimX = gameState.scenario.terrain.dimensionX;
+        int dimY = gameState.scenario.terrain.dimensionY;
 
         // drawing the background
         gc.setFill(theme.background_colour);
@@ -281,7 +306,7 @@ public class GameScene extends Scene {
                 gc.setStroke(theme.font_colour);
                 gc.setFill(theme.font_colour);
                 gc.strokeText(String.valueOf(i), i * squareSize + half - 10, half + 40);
-                if (game.scenario.terrain.collisionMatrix.get(j-1).get(i-1) != 1) {
+                if (gameState.scenario.terrain.collisionMatrix.get(j-1).get(i-1) != 1) {
                     gc.setFill((counter % 2 == 0 ? theme.light_colour : theme.dark_colour));
                     gc.fillRect(i * squareSize - half + offsetX, j * squareSize - half + offsetY, squareSize, squareSize);
                     gc.setStroke(theme.line_colour);

@@ -7,8 +7,8 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class Controller extends Application {
-    public static final int W = 1000;
-    public static final int H = 1000;
+    public static int W = 1000;
+    public static int H = 1000;
     public static Theme globalTheme;
     private static Stage stage;
 
@@ -50,6 +50,17 @@ public class Controller extends Application {
                 return;
             }
         }
+        // adding a resize listener to the new scene
+        scene.widthProperty().addListener(
+                (observableValue, oldSceneWidth, newSceneWidth) -> {
+                    Controller.W = newSceneWidth.intValue();
+                }
+        );
+        scene.heightProperty().addListener(
+                (observableValue, oldSceneHeight, newSceneHeight) -> {
+                    Controller.H = newSceneHeight.intValue();
+                }
+        );
         stage.setScene(scene);
         stage.show();
     }

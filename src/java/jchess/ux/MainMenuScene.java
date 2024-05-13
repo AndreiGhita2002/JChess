@@ -17,8 +17,8 @@ public class MainMenuScene extends Scene {
         root = (Group) parent;
         VBox vBox = new VBox(8);
         root.getChildren().add(vBox);
-        vBox.setLayoutX(Controller.W / 2.0);
-        vBox.setLayoutY(Controller.H / 2.0);
+        vBox.setLayoutX(this.widthProperty().doubleValue() / 2.0);
+        vBox.setLayoutY(this.heightProperty().doubleValue() / 2.0);
 
         // Play Classic Button
         Button playClassicButton = new Button("Play Classic");
@@ -43,5 +43,17 @@ public class MainMenuScene extends Scene {
 
         // drawing the background
         this.setFill(theme.background_colour);
+        
+        // resize listener
+        this.widthProperty().addListener(
+                (observableValue, oldSceneWidth, newSceneWidth) -> {
+                    vBox.setLayoutX(newSceneWidth.doubleValue() / 2.0);
+                }
+        );
+        this.heightProperty().addListener(
+                (observableValue, oldSceneHeight, newSceneHeight) -> {
+                    vBox.setLayoutY(newSceneHeight.doubleValue() / 2.0);
+                }
+        );
     }
 }
